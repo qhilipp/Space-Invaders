@@ -5,6 +5,14 @@
 
 using namespace std;
 
+size_t checkForEnd(string json, size_t start){ //Check whether string ends with "," or "}"
+    size_t end1 = json.find_first_of(",", start);
+    size_t end2 = json.find_first_of("}", start);
+    if(end1 <end2) return end1; //If next "," comes before next "}", then return position of it. Else return positiob of "}"
+    return end2;
+
+}
+
 vector<string> split(const string& str, const string& delimiter) {
     vector<string> tokens;
     size_t start = 0;
@@ -69,6 +77,8 @@ string jsonObjectValue(string json, const string& key) {
     return json.substr(start - 1, end - start + 1);
 }
 
+
+
 int jsonIntValue(string json, const string& key) {
     size_t keyPos = json.find("\"" + key + "\"");
     if(keyPos == string::npos) {
@@ -77,10 +87,13 @@ int jsonIntValue(string json, const string& key) {
     }
     
     size_t start = json.find(":", keyPos) + 1;
-    size_t end = json.find_first_of(",", start);
+    size_t end = checkForEnd(json, start);
 
     return stoi(json.substr(start, end - start));
 }
+
+
+
 
 double jsonDoubleValue(string json, const string& key) {
 	size_t keyPos = json.find("\"" + key + "\"");
@@ -90,7 +103,7 @@ double jsonDoubleValue(string json, const string& key) {
     }
     
     size_t start = json.find(":", keyPos) + 1;
-    size_t end = json.find_first_of(",", start);
+    size_t end = checkForEnd(json,start);
 
     return stod(json.substr(start, end - start));
 }

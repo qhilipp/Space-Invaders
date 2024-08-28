@@ -2,16 +2,16 @@
 	"healtBoost": {
 		"effect": "health",
 		"probability": 0.1,
-		"value": 50,
+		"value": 50
 	},
 	"burstBoost": {
 		"effect": "bursts",
 		"probability": 0.5,
-		"value": 1,
+		"value": 1
 	},
 	"damageBoost": {
 		"effect": "damage",
 		"probability": 0.3,
-		"value": 30,
-	},
+		"value": 30
+	}
 }
