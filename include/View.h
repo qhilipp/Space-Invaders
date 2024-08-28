@@ -19,14 +19,28 @@ public:
 	}
 
 private:
+	void initColors() {
+		init_color(0, 0, 0, 100); // Background color
+	    init_color(1, 0, 1000, 0); // Text color
+	    init_color(2, 0, 500, 0); // Secondary color
+	    init_pair(1, 1, 0); // Text color pair
+	    init_pair(2, 2, 0); // Secondary color pair
+	}
+
 	void setup() {
 		initscr();
 	    start_color();
-	    init_color(0, 1, 1, 1);
+	    initColors();
 	    curs_set(0);
 	    noecho();
 	    keypad(stdscr, true);
 	    nodelay(stdscr, TRUE);
+	}
+
+	bool isTransparent(BMP bmp, int i, int j) {
+		int channels = bmp.bmp_info_header.bit_count / 8;
+		if(channels != 4) return false;
+		return bmp.data[channels * (j * bmp.bmp_info_header.width + i) + 3] == 0;
 	}
 
 	int getColor(BMP bmp, int i, int j) {
@@ -41,10 +55,10 @@ private:
 	    auto it = std::find(colorMap.begin(), colorMap.end(), key);
 
 	    if (it != colorMap.end()) {
-	        return std::distance(colorMap.begin(), it) + 1;
+	        return std::distance(colorMap.begin(), it) + 1 + 5;
 	    } else {
 	        colorMap.push_back(key);
-	        init_color(colorMap.size(), (r * 1000) / 255, (g * 1000) / 255, (b * 1000) / 255);
+	        init_color(colorMap.size() + 5, (r * 1000) / 255, (g * 1000) / 255, (b * 1000) / 255);
 	        return colorMap.size();
 	    }
 	}
@@ -56,10 +70,10 @@ private:
 	    auto it = std::find(colorPairMap.begin(), colorPairMap.end(), key);
 
 	    if (it != colorPairMap.end()) {
-	        return std::distance(colorPairMap.begin(), it) + 1;
+	        return std::distance(colorPairMap.begin(), it) + 1 + 5;
 	    } else {
 	        colorPairMap.push_back(key);
-	        init_pair(colorPairMap.size(), a, b);
+	        init_pair(colorPairMap.size() + 5, a, b);
 	        return colorPairMap.size();
 	    }
 	}
@@ -67,7 +81,6 @@ private:
 	void renderEntity(GameEntity entity) {
 	    int width = entity.baseImg.bmp_info_header.width;
 	    int height = entity.baseImg.bmp_info_header.height;
-	    int channels = entity.baseImg.bmp_info_header.bit_count / 8;
 	    static vector<int> colorMap, colorPairMap;
 
 	    for(int j = 0; j < height; j++) {
@@ -76,11 +89,44 @@ private:
 	            int textureColor = getColor(entity.textureImg, i, j);
 	            int colorPair = getColorPair(textureColor, baseColor);
 
+	            if(isTransparent(entity.baseImg, i, j) && isTransparent(entity.textureImg, i, j)) continue;
+
 	            attron(COLOR_PAIR(colorPair));
 	            mvaddch(j + entity.position.y, i + entity.position.x, entity.texture[j][i]);
 	            attroff(COLOR_PAIR(colorPair));
 	        }
 	    }
+	}
+
+	void renderStatBegining(int row, const string& name) {
+		attron(COLOR_PAIR(1));
+		mvprintw(row, 0, name.c_str());
+		printw(": ");
+		move(row, 10);
+	}
+
+	void renderStat(int row, const string& name, double value) {
+		int maxLength = 20;
+		int length = (int) (value * maxLength);
+		int remaining = maxLength - length;
+		renderStatBegining(row, name);
+		printw(string(length, '#').c_str());
+		attroff(COLOR_PAIR(1));
+		attron(COLOR_PAIR(2));
+		printw(string(remaining, '#').c_str());
+		attroff(COLOR_PAIR(2));
+	}
+
+	void renderStat(int row, const string& name, string value) {
+		renderStatBegining(row, name);
+		printw(value.c_str());
+		attroff(COLOR_PAIR(1));
+	}
+
+	void renderStats() {
+		renderStat(0, "Health", 0.3);
+		renderStat(1, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
+		renderStat(2, "Moving dir", to_string(game->player.movingDirection.x));
 	}
 
 public:
@@ -93,5 +139,6 @@ public:
 			renderEntity(bullet);
 		}
 		renderEntity(game->player);
+		renderStats();
 	}
 };

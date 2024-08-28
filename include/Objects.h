@@ -58,10 +58,6 @@ public:
     bool contains(Bounds other) {
         return other.position.x >= position.x && other.position.x + other.size.x <= position.x + size.x && other.position.y >= position.y && other.position.y + other.size.y <= position.y + size.y;
     }
-
-    string toJSON() {
-        return "";//return "{ position: " + position.toJSON() + ", size: " + size.toJSON() + " }";
-    }
 };
 
 class GameEntity {
@@ -75,7 +71,7 @@ public:
     double terminalVelocity;
     Point movingDirection;
     double drag;
-    int wrapBehaviour;
+    string boundsBehaviour;
 
     GameEntity(string identifier)
         : baseImg((identifier + string("/") + identifier + string("_base.bmp")).c_str()),
@@ -102,20 +98,20 @@ public:
         acceleration.y = jsonDoubleValue(accelerationJSON, "y");
         terminalVelocity = jsonDoubleValue(json, "terminalVelocity");
         drag = jsonDoubleValue(json, "drag");
-        wrapBehaviour = jsonIntValue(json, "wrapBehaviour");
+        boundsBehaviour = jsonStringValue(json, "boundsBehaviour");
     }
 
     void update(Bounds bounds) {
-        Point movingAcceleration = acceleration * (movingDirection * drag);
-        Point updatedVelocity = (velocity + movingAcceleration) * (1 / drag);
+        Point movingAcceleration = acceleration * movingDirection;
+        Point updatedVelocity = velocity + movingAcceleration;
+        if(movingDirection.length() == 0) updatedVelocity = updatedVelocity * (1 / drag);
 
         velocity = updatedVelocity.unit() * min(updatedVelocity.length(), terminalVelocity); // Make sure, that it's not faster than the terminal velocity
 
         Point updatedPosition = position + velocity;
         position = updatedPosition;
 
-        switch(wrapBehaviour) {
-        case 0:
+        if(boundsBehaviour == "stop") {
             if(position.x < bounds.position.x) {
                 position.x = bounds.position.x;
                 velocity.x = 0;
@@ -132,8 +128,8 @@ public:
                 position.y = bounds.position.y + bounds.size.y - getBounds().size.y;
                 velocity.y = 0;
             }
-            break;
-        case 1:
+        }
+        if(boundsBehaviour == "wrap") {
             if(position.x < bounds.position.x) {
                 position.x = bounds.position.x + bounds.size.x - getBounds().size.x;
             }
@@ -146,39 +142,29 @@ public:
             if(position.y + getBounds().size.y > bounds.position.y + bounds.size.y) {
                 position.y = bounds.position.y;
             }
-            break;
-        case 2:
+        }
+        if(boundsBehaviour == "bounce") {
             if(position.x < bounds.position.x) {
                 position.x = bounds.position.x;
                 velocity.x *= -1;
-                //acceleration.x = 0;
             }
             if(position.x + getBounds().size.x > bounds.position.x + bounds.size.x) {
                 position.x = bounds.position.x + bounds.size.x - getBounds().size.x;
                 velocity.x *= -1;
-                //acceleration.x = 0;
             }
             if(position.y < bounds.position.y) {
                 position.y = bounds.position.y;
                 velocity.y *= -1;
-                //acceleration.y = 0;
             }
             if(position.y + getBounds().size.y > bounds.position.y + bounds.size.y) {
                 position.y = bounds.position.y + bounds.size.y - getBounds().size.y;
                 velocity.y *= -1;
-                //acceleration.y = 0;
             }
-            break;
         }
     }
 
     Bounds getBounds() {
         return Bounds(position.x, position.y, baseImg.bmp_info_header.width, baseImg.bmp_info_header.height);
-    }
-
-    string toJSON() {
-        return "";
-        //return "{ bounds: " + getBounds().toJSON() + ", velocity: " + velocity + ", acceleration: " + acceleration + ", terminalVelocity: " + terminalVelocity + ", movingDirection" + movingDirection + " }";
     }
 };
 
@@ -221,6 +207,32 @@ public:
     }
 };
 
+class Powerup: public GameEntity {
+public:
+    string effect;
+    double probability;
+    int value;
+
+    Powerup(string identifier): GameEntity(identifier) {
+        string json = getJSON(identifier, "powerups");
+        effect = jsonStringValue(json, "effect");
+        probability = jsonDoubleValue(json, "probability");
+        value = jsonIntValue(json, "value");
+    }
+};
+
+class Alien: public GameEntity {
+public:
+    vector<Powerup> powerups;
+
+    Alien(string identifier): GameEntity(identifier) {
+        string json = getJSON(identifier, "aliens");
+        for(string powerupIdentifier : jsonStringArrayValue(json, "powerups")) {
+            powerups.push_back(Powerup(powerupIdentifier));
+        }
+    }
+};
+
 class Game {
 public:
     BattleEntity player;
@@ -254,10 +266,18 @@ public:
     }
 
     void spawnPlayerShoot() {
-        Bullet b = player.bullet;
-        b.position.x = player.position.x + player.getBounds().size.x / 2;
-        b.position.y = player.position.y;
-        b.movingDirection = Point(0, -1);
-        bullets.push_back(b);
+        for(int i = 0; i < player.bursts; i++) {
+            Bullet b = player.bullet;
+            b.position.x = player.position.x + player.getBounds().size.x / 2;
+            b.position.y = player.position.y;
+            b.movingDirection = Point(0, -1);
+            bullets.push_back(b);
+        }
+    }
+
+    void applyPowerup(Powerup powerup) {
+        if(powerup.effect == "health") player.healthPoints += powerup.value;
+        if(powerup.effect == "health") player.bursts += powerup.value;
+        if(powerup.effect == "health") player.bullet.damage += powerup.value;
     }
 };

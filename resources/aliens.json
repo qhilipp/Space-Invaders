@@ -1,0 +1,5 @@
+{
+	"alien": {
+		"powerups": ["healtBoost", "burstBoost"],
+	}
+}
