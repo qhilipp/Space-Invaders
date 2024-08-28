@@ -95,14 +95,26 @@ double jsonDoubleValue(string json, const string& key) {
     return stod(json.substr(start, end - start));
 }
 
-vector<string> jsonArrayValue(const string& json, const string& key) {
-    string rawString = jsonStringValue(json, key);
-    if(rawString == "") return {};
-    vector<string> elements;
-    for(string element : split(rawString, ",")) {
-    	elements.push_back(element.substr(1, element.length() - 1));
+vector<string> jsonStringArrayValue(const string& json, const string& key) {
+    size_t keyPos = json.find("\"" + key + "\"");
+    if(keyPos == string::npos) {
+        cerr << "Could not find key " << key << " in " << json << "\n";
+        return {};
     }
-    return elements;
+    
+    size_t colonPos = json.find(":", keyPos);
+    size_t start = json.find_first_of("[", colonPos) + 1;
+    size_t end = json.find_first_of("]", start);
+
+    return split(json.substr(start, end - start), ",");
+}
+
+vector<double> jsonDoubleArrayValue(const string& json, const string& key) {
+    vector<double> doubles;
+    for(string value : jsonStringArrayValue(json, key)) {
+        doubles.push_back(stod(value));
+    }
+    return doubles;
 }
 
 string getJSON(const string& identifier, const string& fileName) {

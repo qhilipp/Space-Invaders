@@ -10,7 +10,7 @@
 		},
 		"terminalVelocity": 10,
 		"drag": 1.1,
-		"wrapBehaviour": 2,
+		"boundsBehaviour": "wrap",
 	},
 	"laser": {
 		"position": {
@@ -22,8 +22,8 @@
 			"y": 5,
 		},
 		"terminalVelocity": 5,
-		"drag": 1.1,
-		"wrapBehaviour": 3,
+		"drag": 1.0,
+		"boundsBehaviour": "bounce",
 	},
 	"alien": {}
 }
