@@ -1,0 +1,8 @@
+{
+	"defaultGame": {
+		"player": "player",
+		"left": "a",
+		"right": "d",
+		"shoot": " ",
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"player": {
+		"healthPoints": 100,
+		"bursts": 1,
+		"bullet": "laser"
+	}
+}
