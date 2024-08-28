@@ -4,6 +4,7 @@
 #include <vector>
 #include <Objects.h>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
