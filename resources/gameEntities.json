@@ -1,29 +1,29 @@
 {
 	"player": {
 		"position": {
-			"x": 10.0,
-			"y": 40.0,
+			"x": 0.0,
+			"y": 40.0
 		},
 		"acceleration": {
 			"x": 1.0,
-			"y": 0.0,
+			"y": 0.0
 		},
 		"terminalVelocity": 10,
 		"drag": 1.1,
-		"boundsBehaviour": "wrap",
+		"boundsBehaviour": "wrap"
 	},
 	"laser": {
 		"position": {
 			"x": 0,
-			"y": 0,
+			"y": 0
 		},
 		"acceleration": {
 			"x": 0,
-			"y": 5,
+			"y": 5
 		},
 		"terminalVelocity": 5,
 		"drag": 1.0,
-		"boundsBehaviour": "bounce",
+		"boundsBehaviour": 3
 	},
 	"alien": {}
 }
