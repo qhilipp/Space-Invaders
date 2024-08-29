@@ -2,8 +2,12 @@
 
 #include <ncurses.h>
 #include <vector>
-#include <Models.h>
 #include <string>
+#include "BattleEntity.h"
+#include "Game.h"
+#include "Bullet.h"
+#include "GameEntity.h"
+#include "Point.h"
 
 using namespace std;
 
