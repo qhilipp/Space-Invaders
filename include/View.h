@@ -2,7 +2,7 @@
 
 #include <ncurses.h>
 #include <vector>
-#include <Objects.h>
+#include <Models.h>
 #include <string>
 #include <algorithm>
 
@@ -127,7 +127,6 @@ private:
 	void renderStats() {
 		renderStat(0, "Health", 0.3);
 		renderStat(1, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
-		renderStat(2, "Moving dir", to_string(game->player.movingDirection.x));
 	}
 
 public:

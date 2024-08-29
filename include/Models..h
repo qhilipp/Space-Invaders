@@ -101,7 +101,7 @@ public:
         boundsBehaviour = jsonStringValue(json, "boundsBehaviour");
     }
 
-    void update(Bounds bounds) {
+    void update(Game& game) {
         Point movingAcceleration = acceleration * movingDirection;
         Point updatedVelocity = velocity + movingAcceleration;
         if(movingDirection.length() == 0) updatedVelocity = updatedVelocity * (1 / drag);
@@ -112,53 +112,67 @@ public:
         position = updatedPosition;
 
         if(boundsBehaviour == "stop") {
-            if(position.x < bounds.position.x) {
-                position.x = bounds.position.x;
+            if(position.x < game.bounds.position.x) {
+                position.x = game.bounds.position.x;
                 velocity.x = 0;
             }
-            if(position.x + getBounds().size.x > bounds.position.x + bounds.size.x) {
-                position.x = bounds.position.x + bounds.size.x - getBounds().size.x;
+            if(position.x + getBounds().size.x > game.bounds.position.x + game.bounds.size.x) {
+                position.x = game.bounds.position.x + game.bounds.size.x - getBounds().size.x;
                 velocity.x = 0;
             }
-            if(position.y < bounds.position.y) {
-                position.y = bounds.position.y;
+            if(position.y < game.bounds.position.y) {
+                position.y = game.bounds.position.y;
                 velocity.y = 0;
             }
-            if(position.y + getBounds().size.y > bounds.position.y + bounds.size.y) {
-                position.y = bounds.position.y + bounds.size.y - getBounds().size.y;
+            if(position.y + getBounds().size.y > game.bounds.position.y + game.bounds.size.y) {
+                position.y = game.bounds.position.y + game.bounds.size.y - getBounds().size.y;
                 velocity.y = 0;
             }
         }
         if(boundsBehaviour == "wrap") {
-            if(position.x < bounds.position.x) {
-                position.x = bounds.position.x + bounds.size.x - getBounds().size.x;
+            if(position.x < game.bounds.position.x) {
+                position.x = game.bounds.position.x + game.bounds.size.x - getBounds().size.x;
             }
-            if(position.x + getBounds().size.x > bounds.position.x + bounds.size.x) {
-                position.x = bounds.position.x;
+            if(position.x + getBounds().size.x > game.bounds.position.x + game.bounds.size.x) {
+                position.x = game.bounds.position.x;
             }
-            if(position.y < bounds.position.y) {
-                position.y = bounds.position.y + bounds.size.y - getBounds().size.y;
+            if(position.y < game.bounds.position.y) {
+                position.y = game.bounds.position.y + game.bounds.size.y - getBounds().size.y;
             }
-            if(position.y + getBounds().size.y > bounds.position.y + bounds.size.y) {
-                position.y = bounds.position.y;
+            if(position.y + getBounds().size.y > game.bounds.position.y + game.bounds.size.y) {
+                position.y = game.bounds.position.y;
             }
         }
         if(boundsBehaviour == "bounce") {
-            if(position.x < bounds.position.x) {
-                position.x = bounds.position.x;
+            if(position.x < game.bounds.position.x) {
+                position.x = game.bounds.position.x;
                 velocity.x *= -1;
+                movingDirection.x *= -1;
             }
-            if(position.x + getBounds().size.x > bounds.position.x + bounds.size.x) {
-                position.x = bounds.position.x + bounds.size.x - getBounds().size.x;
+            if(position.x + getBounds().size.x > game.bounds.position.x + game.bounds.size.x) {
+                position.x = game.bounds.position.x + game.bounds.size.x - getBounds().size.x;
                 velocity.x *= -1;
+                movingDirection.x *= -1;
             }
-            if(position.y < bounds.position.y) {
-                position.y = bounds.position.y;
+            if(position.y < game.bounds.position.y) {
+                position.y = game.bounds.position.y;
                 velocity.y *= -1;
+                movingDirection.y *= -1;
             }
-            if(position.y + getBounds().size.y > bounds.position.y + bounds.size.y) {
-                position.y = bounds.position.y + bounds.size.y - getBounds().size.y;
+            if(position.y + getBounds().size.y > game.bounds.position.y + game.bounds.size.y) {
+                position.y = game.bounds.position.y + game.bounds.size.y - getBounds().size.y;
                 velocity.y *= -1;
+                movingDirection.y *= -1;
+            }
+        }
+        if(boundsBehaviour == "delete") {
+            if(
+                position.x + getBounds().size.x < game.bounds.position.x ||
+                position.x > game.bounds.position.x + game.bounds.size.x ||
+                position.y + getBounds().size.y < game.bounds.position.y ||
+                position.y > game.bounds.position.y + game.bounds.size.y
+            ) {
+                erase(game.bullets, this);
             }
         }
     }
@@ -257,11 +271,10 @@ public:
         if(input == ' ') {
             spawnPlayerShoot();
         }
-        player.update(bounds);
-        for(BattleEntity alien : aliens) alien.update(bounds);
+        player.update(this);
+        for(BattleEntity alien : aliens) alien.update(this);
         for(int i = 0; i < bullets.size(); i++) {
-            bullets[i].update(bounds);
-            //cout << bullets[i].velocity.y << " " << bullets[i].acceleration.y;
+            bullets[i].update(this);
         }
     }
 

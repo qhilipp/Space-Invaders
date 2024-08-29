@@ -1,11 +1,10 @@
 #include <ncurses.h>
 #include <View.h>
-#include <Objects.h>
+#include <Models.h>
 #include <ncurses.h>
 #include <string>
 #include <vector>
 #include <BMP.h>
-#include <Objects.h>
 #include <algorithm>
 #include <iostream>
 #include <unistd.h>
