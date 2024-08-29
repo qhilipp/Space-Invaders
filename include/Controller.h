@@ -1,9 +1,9 @@
 #pragma once
 
-#include <ncurses.h>
-
 class Controller {	
+public:
+	Controller();
 private:
-	View* view = View();
-	Game* game = Game("defaultGame");
+	View* view;
+	Game* game;
 };

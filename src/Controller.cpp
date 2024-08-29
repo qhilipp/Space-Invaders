@@ -1,34 +1,24 @@
 #include <ncurses.h>
-#include <View.h>
-#include <Models.h>
-#include <ncurses.h>
-#include <string>
-#include <vector>
-#include <BMP.h>
-#include <algorithm>
-#include <iostream>
 #include <unistd.h>
+#include "View.h"
+#include "Game.h"
+#include "Controller.h"
 
 using namespace std;
 
-class Controller {
-
-	Game* game = new Game("defaultGame");
-	View* view = new View(game);
-
-public:
-	Controller() {
-		char input = 0;
-		while(true) {
-			input = getch();
-			game->update(input);
-			view->render();
-			if(input == 't') break;
-			usleep(30000);
-		}
-		endwin();
+Controller::Controller() {
+	game = new Game("defaultGame");
+	view = new View(game);
+	char input = 0;
+	while(true) {
+		input = getch();
+		game->update(input);
+		view->render();
+		if(input == 't') break;
+		usleep(30000);
 	}
-};
+	endwin();
+}
 
 int main() {
 	Controller();
