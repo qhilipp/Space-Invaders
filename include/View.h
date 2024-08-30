@@ -3,15 +3,12 @@
 #include <ncurses.h>
 #include <vector>
 #include <string>
-<<<<<<< HEAD
 #include <algorithm>
-=======
 #include "BattleEntity.h"
 #include "Game.h"
 #include "Bullet.h"
 #include "GameEntity.h"
 #include "Point.h"
->>>>>>> origin/model-redesign
 
 using namespace std;
 
@@ -141,6 +138,9 @@ public:
 		clear();
 		for(BattleEntity alien : game->aliens) {
 			renderEntity(alien);
+		}
+		for(Powerup powerup : game->powerups) {
+			renderEntity(powerup);
 		}
 		for(Bullet bullet : game->bullets) {
 			renderEntity(bullet);

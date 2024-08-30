@@ -6,4 +6,6 @@ public:
 private:
 	View* view;
 	Game* game;
+
+	Input getInput(int input);
 };

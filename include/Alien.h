@@ -3,10 +3,11 @@
 #include <vector>
 #include <string>
 #include "Powerup.h"
+#include "BattleEntity.h"
 
 using namespace std;
 
-class Alien: public GameEntity {
+class Alien: public BattleEntity {
 public:
     vector<Powerup> powerups;
 

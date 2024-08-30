@@ -1,5 +1,5 @@
 {
 	"alien": {
-		"powerups": ["healtBoost", "burstBoost"],
+		"powerups": ["healthBoost"],
 	}
 }

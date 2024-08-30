@@ -26,5 +26,6 @@ public:
     GameEntity(string identifier);
 
     void update(Game& game);
+    bool operator==(const GameEntity& other) const;
     Bounds getBounds();
 };

@@ -9,10 +9,8 @@
 			"y": 0.0
 		},
 		"terminalVelocity": 10,
-
 		"drag": 1.05,
 		"boundsBehaviour": "bounce",
-
 	},
 	"laser": {
 		"position": {
@@ -23,9 +21,60 @@
 			"x": 0,
 			"y": 5
 		},
-		"terminalVelocity": 5,
+		"terminalVelocity": 2,
 		"drag": 1.0,
-		"boundsBehaviour": 3
+		"boundsBehaviour": "delete"
 	},
-	"alien": {}
+	"alien": {
+		"position": {
+			"x": 5,
+			"y": 5
+		},
+		"acceleration": {
+			"x": 1,
+			"y": 0
+		},
+		"terminalVelocity": 4,
+		"drag": 1.0,
+		"boundsBehaviour": "bounce"
+	},
+	"healthBoost": {
+		"position": {
+			"x": 0,
+			"y": 0
+		},
+		"acceleration": {
+			"x": 4,
+			"y": 7
+		},
+		"terminalVelocity": 4,
+		"drag": 1.0,
+		"boundsBehaviour": "bounce"
+	},
+	"damageBoost": {
+		"position": {
+			"x": 0,
+			"y": 0
+		},
+		"acceleration": {
+			"x": -4,
+			"y": 7
+		},
+		"terminalVelocity": 4,
+		"drag": 1.0,
+		"boundsBehaviour": "bounce"
+	},
+	"burstsBoost": {
+		"position": {
+			"x": 0,
+			"y": 0
+		},
+		"acceleration": {
+			"x": 4,
+			"y": -7
+		},
+		"terminalVelocity": 4,
+		"drag": 1.0,
+		"boundsBehaviour": "bounce"
+	}
 }

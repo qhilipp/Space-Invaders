@@ -111,10 +111,14 @@ void GameEntity::update(Game& game) {
             position.y + getBounds().size.y < game.bounds.position.y ||
             position.y > game.bounds.position.y + game.bounds.size.y
         ) {
-            // TODO: Remove this from game->bullets
+            position.y = -100000;
         }
     }
 }
+
+bool GameEntity::operator==(const GameEntity& other) const {
+        return this->position.x == other.position.x && this->position.y == other.position.y;
+    }
 
 Bounds GameEntity::getBounds() {
     return Bounds(position.x, position.y, baseImg.bmp_info_header.width, baseImg.bmp_info_header.height);
