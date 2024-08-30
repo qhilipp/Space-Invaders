@@ -22,6 +22,7 @@ public:
     Point movingDirection;
     double drag;
     string boundsBehaviour;
+    int aliensKilled;
 
     GameEntity(string identifier);
 

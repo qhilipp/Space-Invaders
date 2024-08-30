@@ -76,6 +76,7 @@ void Game::spawnPowerup(int alienIndex) {
     p.movingDirection = Point(1, 1);
     powerups.push_back(p);
     aliens.erase(aliens.begin() + alienIndex);
+    player.aliensKilled++;
 }
 
 void Game::applyPowerup(int powerupIndex) {

@@ -15,4 +15,5 @@ BattleEntity::BattleEntity(string identifier): GameEntity(identifier), bullet(Bu
     bursts = jsonIntValue(json, "bursts");
     healthPoints = jsonIntValue(json, "healthPoints");
     bullet = Bullet(jsonStringValue(json, "bullet"));
+    aliensKilled=0;
 }
