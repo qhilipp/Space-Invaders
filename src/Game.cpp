@@ -7,11 +7,14 @@
 
 using namespace std;
 
+string originalIdentifier;
+
 Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 210, 55)) {
     aliens = {};
+    originalIdentifier = identifier;
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
-    loadAliens(identifier);
+    loadAliens();
     keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;
     keyMap[getKeyCode(jsonStringValue(json, "right"))] = Input::RIGHT;
     keyMap[getKeyCode(jsonStringValue(json, "shoot"))] = Input::SHOOT;
@@ -73,7 +76,7 @@ GameState Game::getGameState() {
 }
 
 void Game::loadAliens() {
-    string json = getJSON(identifier, "games");
+    string json = getJSON(originalIdentifier, "games");
     vector<string> alienRows = jsonStringArrayValue(json, "aliens");
     for(int i = 0; i < alienRows.size(); i++) {
         Alien alien = Alien(alienRows[i]);
