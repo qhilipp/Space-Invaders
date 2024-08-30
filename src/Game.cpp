@@ -14,6 +14,7 @@ Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 
     for(int i = 0; i < alienRows.size(); i++) {
         Alien alien = Alien(alienRows[i]);
         alien.position = Point(i * (alien.getBounds().size.x + 4), 5);
+        alien.movingDirection = Point(1, 1);
         aliens.push_back(alien);
     }
     keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;

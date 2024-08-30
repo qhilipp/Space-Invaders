@@ -50,7 +50,15 @@ void GameEntity::update(Game& game) {
     Point updatedPosition = position + velocity;
     position = updatedPosition;
 
-    if(boundsBehaviour == "stop") {
+    if(boundsBehaviour.find("down") != string::npos) {
+        if(
+            position.x < game.bounds.position.x ||
+            position.x + getBounds().size.x > game.bounds.position.x + game.bounds.size.x
+        ) {
+            position.y += 5;//getBounds().size.y;
+        }
+    }
+    if(boundsBehaviour.find("stop") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x;
             velocity.x = 0;
@@ -68,7 +76,7 @@ void GameEntity::update(Game& game) {
             velocity.y = 0;
         }
     }
-    if(boundsBehaviour == "wrap") {
+    if(boundsBehaviour.find("teleport") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x + game.bounds.size.x - getBounds().size.x;
         }
@@ -82,7 +90,7 @@ void GameEntity::update(Game& game) {
             position.y = game.bounds.position.y;
         }
     }
-    if(boundsBehaviour == "bounce") {
+    if(boundsBehaviour.find("bounce") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x;
             velocity.x *= -1;
@@ -104,7 +112,7 @@ void GameEntity::update(Game& game) {
             movingDirection.y *= -1;
         }
     }
-    if(boundsBehaviour == "delete") {
+    if(boundsBehaviour.find("delete") != string::npos) {
         if(
             position.x + getBounds().size.x < game.bounds.position.x ||
             position.x > game.bounds.position.x + game.bounds.size.x ||
