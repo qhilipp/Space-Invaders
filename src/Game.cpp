@@ -4,6 +4,8 @@
 #include <sys/time.h>
 #include "Game.h"
 #include "util.h"
+#include <unistd.h>
+
 
 using namespace std;
 
@@ -93,17 +95,31 @@ long int getTime() {
     return tp.tv_sec * 1000 + tp.tv_usec / 1000;
 }
 
-void Game::spawnPlayerShoot() {
-    static long int lastShotTime = getTime();
-    if(getTime() - lastShotTime < player.bullet.delay) return;
-    lastShotTime = getTime();
-    for(int i = 0; i < player.bursts; i++) {
-        Bullet b = player.bullet;
-        b.position.x = player.position.x + player.getBounds().size.x / 2;
-        b.position.y = player.position.y;
-        b.movingDirection = Point(0, -1);
-        bullets.push_back(b);
+void Game::spawnPlayerShoot() { 
+    // Check if the delay between bursts has passed and if all bursts have been fired
+    if (getTime() - player.lastShotTime < player.bullet.delay) {
+        if (player.burstsFired >= player.bursts) {
+            return; // If we already fired all bursts, return
+        }
+    } else {
+        // If the full delay has passed, reset for a new burst sequence
+        player.burstsFired = 0;
+        player.lastShotTime = getTime();
     }
+
+    // Check if we are within the time to fire the next bullet in the burst
+    if (getTime() - player.lastShotTime < player.bullet.delay / 5) {
+        return; // Not yet time to fire the next bullet in the burst
+    }
+    player.lastShotTime = getTime();
+    
+    // Create and position the bullet
+    Bullet b = player.bullet;
+    b.position.x = player.position.x + player.getBounds().size.x / 2;
+    b.position.y = player.position.y;
+    b.movingDirection = Point(0, -1);
+    bullets.push_back(b);
+    player.burstsFired++;
 }
 
 void Game::spawnPowerup(int alienIndex) {

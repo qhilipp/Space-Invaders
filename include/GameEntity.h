@@ -23,6 +23,8 @@ public:
     double drag;
     string boundsBehaviour;
     int aliensKilled;
+    int burstsFired;
+    long int lastShotTime;
 
     GameEntity(string identifier);
 
