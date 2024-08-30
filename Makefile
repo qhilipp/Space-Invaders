@@ -8,12 +8,14 @@ LDLIBS := -lncursesw -lboost_unit_test_framework-mt
 # Directories and files
 SRCDIR := ./src
 BINDIR := ./bin
-GAME_SRCS := $(wildcard $(SRCDIR)/*.cpp)
-TEST_SRCS := $(filter-out $(SRCDIR)/main.cpp, $(GAME_SRCS)) # Assuming main.cpp is not for tests
+TESTDIR := ./tests
 
-# Object files
+GAME_SRCS := $(wildcard $(SRCDIR)/*.cpp)
 GAME_OBJS := $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(GAME_SRCS))
-TEST_OBJS := $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(TEST_SRCS)) $(BINDIR)/test_call.o
+
+# Test files
+TEST_SRCS := $(wildcard $(TESTDIR)/*.cpp)
+TEST_OBJS := $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%.o,$(TEST_SRCS))
 
 # Targets
 all: game tests
@@ -21,10 +23,14 @@ all: game tests
 game: $(GAME_OBJS)
 	$(CXX) $^ -o $(BINDIR)/game $(LDFLAGS) $(LDLIBS)
 
-tests: $(TEST_OBJS)
+tests: $(TEST_OBJS) $(BINDIR)/util.o  # Include util.o for test
 	$(CXX) $^ -o $(BINDIR)/tests $(LDFLAGS) $(LDLIBS)
 
 $(BINDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(BINDIR)/%.o: $(TESTDIR)/%.cpp
 	@mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
