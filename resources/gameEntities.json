@@ -31,12 +31,12 @@
 			"y": 5
 		},
 		"acceleration": {
-			"x": 1,
+			"x": 3,
 			"y": 0
 		},
 		"terminalVelocity": 4,
 		"drag": 1.0,
-		"boundsBehaviour": "bounce"
+		"boundsBehaviour": "bouncedown"
 	},
 	"healthBoost": {
 		"position": {
