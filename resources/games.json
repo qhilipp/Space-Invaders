@@ -1,8 +1,9 @@
 {
 	"defaultGame": {
 		"player": "player",
-		"left": "a",
-		"right": "d",
-		"shoot": " "
+		"left": "left",
+		"right": "right",
+		"shoot": " ",
+		"aliens": ["alien", "alien", "alien"],
 	}
 }

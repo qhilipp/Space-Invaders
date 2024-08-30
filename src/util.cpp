@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -119,7 +120,7 @@ double jsonDoubleValue(string json, const string& key) {
     return stod(json.substr(start, end - start));
 }
 
-vector<string> jsonStringArrayValue(const string& json, const string& key) {
+vector<string> jsonRawArrayValue(const string& json, const string& key) {
     size_t keyPos = json.find("\"" + key + "\"");
     if(keyPos == string::npos) {
         cerr << "Could not find key " << key << " in " << json << "\n";
@@ -133,9 +134,17 @@ vector<string> jsonStringArrayValue(const string& json, const string& key) {
     return split(json.substr(start, end - start), ",");
 }
 
+vector<string> jsonStringArrayValue(const string& json, const string& key) {
+    vector<string> strings;
+    for(string value : jsonRawArrayValue(json, key)) {
+        strings.push_back(value.substr(1, value.size() - 2));
+    }
+    return strings;
+}
+
 vector<double> jsonDoubleArrayValue(const string& json, const string& key) {
     vector<double> doubles;
-    for(string value : jsonStringArrayValue(json, key)) {
+    for(string value : jsonRawArrayValue(json, key)) {
         doubles.push_back(stod(value));
     }
     return doubles;
@@ -156,5 +165,21 @@ string getJSON(const string& identifier, const string& fileName) {
     file.close();
     replaceOccurrencesMoin(json, "\n", "");
     replaceOccurrencesMoin(json, "\t", "");
+    replaceOccurrencesMoin(json, " ", "");
     return jsonObjectValue(json, identifier);
+}
+
+int getKeyCode(const string& input) {
+    if(input == "left") return KEY_LEFT;
+    if(input == "right") return KEY_RIGHT;
+    if(input == "up") return KEY_UP;
+    if(input == "down") return KEY_DOWN;
+    if(input == "") {
+        return ' '; // This is because the json function remove all white spaces
+    }
+    if(input.size() != 1) {
+        cerr << "Invalid key input " << input;
+        return -1;
+    }
+    return input[0];
 }

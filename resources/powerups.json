@@ -1,5 +1,6 @@
+
 {
-	"healtBoost": {
+	"healthBoost": {
 		"effect": "health",
 		"probability": 0.1,
 		"value": 50

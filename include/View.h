@@ -139,6 +139,9 @@ public:
 		for(BattleEntity alien : game->aliens) {
 			renderEntity(alien);
 		}
+		for(Powerup powerup : game->powerups) {
+			renderEntity(powerup);
+		}
 		for(Bullet bullet : game->bullets) {
 			renderEntity(bullet);
 		}
