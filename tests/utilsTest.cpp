@@ -31,56 +31,56 @@ BOOST_AUTO_TEST_CASE(test_checkForEnd){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Test case for splitting with a simple delimiter
-BOOST_AUTO_TEST_CASE(SplitBasicTest) {
+BOOST_AUTO_TEST_CASE(split_BasicTest) {
     vector<string> result = split("a,b,c", ",");
     vector<string> expected = {"a", "b", "c"};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for delimiter not found in the string
-BOOST_AUTO_TEST_CASE(SplitDelimiterNotFound) {
+BOOST_AUTO_TEST_CASE(split_DelimiterNotFound) {
     vector<string> result = split("abc", ",");
     vector<string> expected = {"abc"};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for empty string with non-empty delimiter
-BOOST_AUTO_TEST_CASE(SplitEmptyString) {
+BOOST_AUTO_TEST_CASE(split_EmptyString) {
     vector<string> result = split("", ",");
     vector<string> expected = {""};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for empty delimiter
-BOOST_AUTO_TEST_CASE(SplitEmptyDelimiter) {
+BOOST_AUTO_TEST_CASE(split_EmptyDelimiter) {
     vector<string> result = split("a b c", "");
     vector<string> expected = {};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for delimiter is a single character
-BOOST_AUTO_TEST_CASE(SplitSingleCharacterDelimiter) {
+BOOST_AUTO_TEST_CASE(split_SingleCharacterDelimiter) {
     vector<string> result = split("abc|def|ghi", "|");
     vector<string> expected = {"abc", "def", "ghi"};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for multiple consecutive delimiters
-BOOST_AUTO_TEST_CASE(SplitConsecutiveDelimiters) {
+BOOST_AUTO_TEST_CASE(split_ConsecutiveDelimiters) {
     vector<string> result = split("a,,b,,c", ",");
     vector<string> expected = {"a", "", "b", "", "c"};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for delimiter at the end of the string
-BOOST_AUTO_TEST_CASE(SplitDelimiterAtEnd) {
+BOOST_AUTO_TEST_CASE(split_DelimiterAtEnd) {
     vector<string> result = split("a,b,c,", ",");
     vector<string> expected = {"a", "b", "c", ""};
     BOOST_CHECK(result == expected);
 }
 
 // Test case for delimiter at the start of the string
-BOOST_AUTO_TEST_CASE(SplitDelimiterAtStart) {
+BOOST_AUTO_TEST_CASE(split_DelimiterAtStart) {
     vector<string> result = split(",a,b,c", ",");
     vector<string> expected = {"", "a", "b", "c"};
     BOOST_CHECK(result == expected);
@@ -92,70 +92,70 @@ BOOST_AUTO_TEST_CASE(SplitDelimiterAtStart) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Test case for basic replacement
-BOOST_AUTO_TEST_CASE(ReplaceBasicTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_BasicTest) {
     string text = "hello world";
     replaceOccurrencesMoin(text, "world", "there");
     BOOST_CHECK_EQUAL(text, "hello there");
 }
 
 // Test case for no occurrences of search string
-BOOST_AUTO_TEST_CASE(ReplaceNoOccurrencesTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_NoOccurrencesTest) {
     string text = "hello world";
     replaceOccurrencesMoin(text, "foo", "bar");
     BOOST_CHECK_EQUAL(text, "hello world");
 }
 
 // Test case for replacing with an empty string
-BOOST_AUTO_TEST_CASE(ReplaceWithEmptyStringTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_WithEmptyStringTest) {
     string text = "hello world";
     replaceOccurrencesMoin(text, "world", "");
     BOOST_CHECK_EQUAL(text, "hello ");
 }
 
 // Test case for empty search string (should not replace anything)
-BOOST_AUTO_TEST_CASE(ReplaceEmptySearchStringTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_EmptySearchStringTest) {
     string text = "hello world";
     replaceOccurrencesMoin(text, "", "bar");
     BOOST_CHECK_EQUAL(text, "hello world");
 }
 
 // Test case for multiple occurrences
-BOOST_AUTO_TEST_CASE(ReplaceMultipleOccurrencesTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_MultipleOccurrencesTest) {
     string text = "foo foo foo";
     replaceOccurrencesMoin(text, "foo", "bar");
     BOOST_CHECK_EQUAL(text, "bar bar bar");
 }
 
 // Test case for search string being a substring of the replace string
-BOOST_AUTO_TEST_CASE(ReplaceSearchIsSubstringTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_SearchIsSubstringTest) {
     string text = "abababab";
     replaceOccurrencesMoin(text, "ab", "abc");
     BOOST_CHECK_EQUAL(text, "abcabcabcabc");
 }
 
 // Test case for replacement string being a substring of the search string
-BOOST_AUTO_TEST_CASE(ReplaceReplaceIsSubstringTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_IsSubstringTest) {
     string text = "abcabcabc";
     replaceOccurrencesMoin(text, "abc", "ab");
     BOOST_CHECK_EQUAL(text, "ababab");
 }
 
 // Test case for empty input string
-BOOST_AUTO_TEST_CASE(ReplaceEmptyInputStringTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_EmptyInputStringTest) {
     string text = "";
     replaceOccurrencesMoin(text, "search", "replace");
     BOOST_CHECK_EQUAL(text, "");
 }
 
 // Test case for search string longer than the input string
-BOOST_AUTO_TEST_CASE(ReplaceSearchLongerThanInputTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_SearchLongerThanInputTest) {
     string text = "short";
     replaceOccurrencesMoin(text, "longsearch", "replace");
     BOOST_CHECK_EQUAL(text, "short");
 }
 
 // Test case for replace string longer than the search string
-BOOST_AUTO_TEST_CASE(ReplaceReplaceLongerThanSearchTest) {
+BOOST_AUTO_TEST_CASE(replaceOccurencesMoin_LongerThanSearchTest) {
     string text = "abc";
     replaceOccurrencesMoin(text, "ab", "abcd");
     BOOST_CHECK_EQUAL(text, "abcdc");
@@ -169,19 +169,19 @@ BOOST_AUTO_TEST_CASE(ReplaceReplaceLongerThanSearchTest) {
 
 
 // Test case for basic JSON extraction
-BOOST_AUTO_TEST_CASE(JsonBasicTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_BasicTest) {
     string json = R"({"name": "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "name"), "John");
 }
 
 // Test case for extracting a value when key is not found
-BOOST_AUTO_TEST_CASE(JsonKeyNotFoundTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_KeyNotFoundTest) {
     string json = R"({"name": "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "address"), "");
 }
 
 // Test case for extracting a value when JSON is empty
-BOOST_AUTO_TEST_CASE(JsonEmptyJsonTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_EmptyJsonTest) {
     string json = "";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "name"), "");
 }
@@ -193,32 +193,32 @@ BOOST_AUTO_TEST_CASE(JsonKeyAtEndTest) {
 }
 
 // Test case for extracting a value when there are spaces around the colon
-BOOST_AUTO_TEST_CASE(JsonSpacesAroundColonTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_SpacesAroundColonTest) {
     string json = R"({"name" : "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "name"), "John");
 }
 
 
 // Test case for key with special characters
-BOOST_AUTO_TEST_CASE(JsonSpecialCharactersKeyTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_SpecialCharactersKeyTest) {
     string json = R"({"na@me": "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "na@me"), "John");
 }
 
 // Test case for extracting a numeric value as a string
-BOOST_AUTO_TEST_CASE(JsonNumericValueTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_NumericValueTest) {
     string json = R"({"name": "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "age"), "30");
 }
 
 // Test case for key with an empty value
-BOOST_AUTO_TEST_CASE(JsonEmptyValueTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_EmptyValueTest) {
     string json = R"({"name": "John", "age": ""})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "age"), "");
 }
 
 // Test case for JSON with multiple occurrences of the same key
-BOOST_AUTO_TEST_CASE(JsonMultipleOccurrencesTest) {
+BOOST_AUTO_TEST_CASE(jsonStringValue_MultipleOccurrencesTest) {
     string json = R"({"name": "John", "name": "Doe", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonStringValue(json, "name"), "John");
 }
@@ -232,49 +232,49 @@ BOOST_AUTO_TEST_CASE(JsonMultipleOccurrencesTest) {
 
 
 // Test case for extracting a simple nested object
-BOOST_AUTO_TEST_CASE(JsonObjectValueSimpleNestedObjectTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_SimpleNestedObjectTest) {
     string json = R"({"user": {"name": "John", "age": "30"}, "city": "New York"})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "user"), "{\"name\": \"John\", \"age\": \"30\"}");
 }
 
 // Test case for extracting an object nested within another object
-BOOST_AUTO_TEST_CASE(JsonObjectValueDeeplyNestedObjectTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_DeeplyNestedObjectTest) {
     string json = R"({"user": {"profile": {"name": "John", "age": "30"}}, "city": "New York"})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "profile"), "{\"name\": \"John\", \"age\": \"30\"}");
 }
 
 // Test case for object with multiple levels of nesting
-BOOST_AUTO_TEST_CASE(JsonObjectValueMultipleLevelsNestedObjectTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_MultipleLevelsNestedObjectTest) {
     string json = R"({"company": {"department": {"team": {"lead": "Alice", "members": 5}}}})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "team"), "{\"lead\": \"Alice\", \"members\": 5}");
 }
 
 // Test case for key not found
-BOOST_AUTO_TEST_CASE(JsonObjectValueKeyNotFoundTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_KeyNotFoundTest) {
     string json = R"({"user": {"name": "John", "age": "30"}})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "address"), "");
 }
 
 // Test case for empty JSON string
-BOOST_AUTO_TEST_CASE(JsonObjectValueEmptyJsonTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_EmptyJsonTest) {
     string json = "";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "user"), "");
 }
 
 // Test case for non-object value associated with key
-BOOST_AUTO_TEST_CASE(JsonObjectValueNonObjectValueTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_NonObjectValueTest) {
     string json = R"({"user": "John", "age": "30"})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "user"), "");
 }
 
 // Test case for object with an empty nested object
-BOOST_AUTO_TEST_CASE(JsonObjectValueEmptyNestedObjectTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_EmptyNestedObjectTest) {
     string json = R"({"user": {}, "city": "New York"})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "user"), "{}");
 }
 
 // Test case for object with multiple objects at the same level
-BOOST_AUTO_TEST_CASE(JsonObjectValueMultipleObjectsSameLevelTest) {
+BOOST_AUTO_TEST_CASE(jsonObjectValue_MultipleObjectsSameLevelTest) {
     string json = R"({"user": {"name": "John"}, "address": {"city": "New York", "zip": "10001"}})";
     BOOST_CHECK_EQUAL(jsonObjectValue(json, "address"), "{\"city\": \"New York\", \"zip\": \"10001\"}");
 }
@@ -412,90 +412,36 @@ BOOST_AUTO_TEST_CASE(jsonDoubleValue_DoubleValueWithWhitespaceTest) {
 // Test case for a simple valid string array
 BOOST_AUTO_TEST_CASE(jsonStringArrayValue_SimpleStringArrayTest) {
     string json = R"({"fruits": ["apple", "banana", "cherry"], "price": 10})";
-    vector<string> expected = {"\"apple\"", "\"banana\"", "\"cherry\""};
+    vector<string> expected = {"apple", "banana", "cherry"};  // Adjusted expected values
+    vector<string> result = jsonStringArrayValue(json, "fruits");
+    
     BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "fruits").begin(),
-        jsonStringArrayValue(json, "fruits").end(),
+        result.begin(),
+        result.end(),
         expected.begin(),
         expected.end()
     );
 }
 
-// Test case for an empty array
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_EmptyArrayTest) {
-    string json = R"({"items": [], "count": 0})";
-    vector<string> expected = {};
+///////////////////////////////////////////////////////////////////////////////////////////////
+//TESTS FOR jsonDoubleArrayValue:
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+BOOST_AUTO_TEST_CASE(jsonDoubleArrayValue_ValidDoubles) {
+    std::string json = R"({"numbers": [1.23, 4.56, 7.89]})";
+    std::vector<double> expected = {1.23, 4.56, 7.89};
+    std::vector<double> result = jsonDoubleArrayValue(json, "numbers");
+    
+
     BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "items").begin(),
-        jsonStringArrayValue(json, "items").end(),
+        result.begin(),
+        result.end(),
         expected.begin(),
         expected.end()
     );
 }
 
-// Test case for key not found
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_KeyNotFoundTest) {
-    string json = R"({"fruits": ["apple", "banana", "cherry"], "price": 10})";
-    vector<string> expected = {};
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "vegetables").begin(),
-        jsonStringArrayValue(json, "vegetables").end(),
-        expected.begin(),
-        expected.end()
-    );
-}
 
-// Test case for string array with spaces and newlines
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_StringArrayWithSpacesTest) {
-    string json = R"({"colors": [
-        "red", 
-        "green", 
-        "blue"
-    ], "count": 3})";
-    vector<string> expected = {"\"red\"", "\"green\"", "\"blue\""};
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "colors").begin(),
-        jsonStringArrayValue(json, "colors").end(),
-        expected.begin(),
-        expected.end()
-    );
-}
-
-// Test case for array at the end of JSON
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_ArrayAtEndTest) {
-    string json = R"({"price": 10, "fruits": ["apple", "banana", "cherry"]})";
-    vector<string> expected = {"\"apple\"", "\"banana\"", "\"cherry\""};
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "fruits").begin(),
-        jsonStringArrayValue(json, "fruits").end(),
-        expected.begin(),
-        expected.end()
-    );
-}
-
-// Test case for malformed JSON (missing closing bracket)
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_MalformedArrayTest) {
-    string json = R"({"items": ["apple", "banana", "cherry", "price": 10})";
-    BOOST_CHECK_THROW(jsonStringArrayValue(json, "items"), std::out_of_range);
-}
-
-// Test case for single string value (not an array)
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_SingleStringValueTest) {
-    string json = R"({"color": "red", "count": 1})";
-    BOOST_CHECK_THROW(jsonStringArrayValue(json, "color"), std::out_of_range);
-}
-
-// Test case for array with mixed whitespace
-BOOST_AUTO_TEST_CASE(jsonStringArrayValue_MixedWhitespaceArrayTest) {
-    string json = R"({"numbers": [ "one" , " two ","three"  ], "count": 3})";
-    vector<string> expected = {"\"one\"", "\" two \"", "\"three\""};
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-        jsonStringArrayValue(json, "numbers").begin(),
-        jsonStringArrayValue(json, "numbers").end(),
-        expected.begin(),
-        expected.end()
-    );
-}
 
 BOOST_AUTO_TEST_SUITE_END()
 

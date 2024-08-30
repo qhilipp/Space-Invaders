@@ -136,11 +136,26 @@ vector<string> jsonRawArrayValue(const string& json, const string& key) {
 
 vector<string> jsonStringArrayValue(const string& json, const string& key) {
     vector<string> strings;
-    for(string value : jsonRawArrayValue(json, key)) {
-        strings.push_back(value.substr(1, value.size() - 2));
+    for (const string& value : jsonRawArrayValue(json, key)) {
+        // Find position of quote at beginning
+        size_t firstQuotePos = value.find_first_of("\"");
+        //Find position of quote at the end
+        size_t lastQuotePos = value.find_last_of("\"");
+
+        // Check whether both positions exist and if they arent the same
+        if (firstQuotePos != string::npos && lastQuotePos != string::npos && firstQuotePos != lastQuotePos) {
+            // Extract the substring between the quotes
+            strings.push_back(value.substr(firstQuotePos + 1, lastQuotePos - firstQuotePos - 1));
+        } 
+        else {
+            // Handle cases where quotes are not found or incorrectly positioned
+            // For instance, log an error, throw an exception, or handle as needed
+            cerr << "Error: Malformed JSON string value: " << value << endl;
+        }
     }
     return strings;
 }
+
 
 vector<double> jsonDoubleArrayValue(const string& json, const string& key) {
     vector<double> doubles;
