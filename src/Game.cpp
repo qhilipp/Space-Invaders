@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <sys/time.h>
 #include "Game.h"
 #include "util.h"
 
@@ -10,13 +11,7 @@ Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 
     aliens = {};
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
-    vector<string> alienRows = jsonStringArrayValue(json, "aliens");
-    for(int i = 0; i < alienRows.size(); i++) {
-        Alien alien = Alien(alienRows[i]);
-        alien.position = Point(i * (alien.getBounds().size.x + 4), 5);
-        alien.movingDirection = Point(1, 1);
-        aliens.push_back(alien);
-    }
+    loadAliens(identifier);
     keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;
     keyMap[getKeyCode(jsonStringValue(json, "right"))] = Input::RIGHT;
     keyMap[getKeyCode(jsonStringValue(json, "shoot"))] = Input::SHOOT;
@@ -58,9 +53,47 @@ void Game::update(Input input) {
         aliens[i].update(*this);
         if(aliens[i].position.y < -100) aliens.erase(aliens.begin() + i);
     }
+
+    GameState gameState = getGameState();
+    if(gameState == GameState::NEXT_LEVEL) {
+        loadAliens();
+    }
+}
+
+GameState Game::getGameState() {
+    for(int i = 0; i < aliens.size(); i++) {
+        if(aliens[i].position.y >= bounds.size.y - player.getBounds().size.y) {
+            return GameState::GAME_OVER;
+        }
+    }
+    if(aliens.size() == 0) {
+        loadAliens();
+    }
+    return GameState::PLAYING;
+}
+
+void Game::loadAliens() {
+    string json = getJSON(identifier, "games");
+    vector<string> alienRows = jsonStringArrayValue(json, "aliens");
+    for(int i = 0; i < alienRows.size(); i++) {
+        Alien alien = Alien(alienRows[i]);
+        alien.position = Point(i * (alien.getBounds().size.x + 4), 5);
+        alien.movingDirection = Point(1, 1);
+        aliens.push_back(alien);
+    }
+    initialAlienCount = aliens.size();
+}
+
+long int getTime() {
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return tp.tv_sec * 1000 + tp.tv_usec / 1000;
 }
 
 void Game::spawnPlayerShoot() {
+    static long int lastShotTime = getTime();
+    if(getTime() - lastShotTime < player.bullet.delay) return;
+    lastShotTime = getTime();
     for(int i = 0; i < player.bursts; i++) {
         Bullet b = player.bullet;
         b.position.x = player.position.x + player.getBounds().size.x / 2;

@@ -21,6 +21,7 @@ public:
 	View(Game* game) {
 		setup();
 		this->game = game;
+		getmaxyx(stdscr, game->bounds.size.y, game->bounds.size.x);
 	}
 
 private:
@@ -110,20 +111,15 @@ private:
 		move(row, 10);
 	}
 
-
-
-
-	void renderStatNum(int row, const string& name, int value)
-	{
+	void renderStatNum(int row, const string& name, int value) {
 		std::string count = std::to_string(value);
 		attron(COLOR_PAIR(1));
 		mvprintw(row, 0, name.c_str());
 		printw(": ");
 		printw(count.c_str());
 		move(row, 10);
-
-
 	}
+
 	void renderStat(int row, const string& name, double value) {
 		int maxLength = 20;
 		int length = (int) (value * maxLength);
@@ -136,8 +132,6 @@ private:
 		attroff(COLOR_PAIR(2));
 	}
 
-
-
 	void renderStat(int row, const string& name, string value) {
 		renderStatBegining(row, name);
 		printw(value.c_str());
@@ -147,7 +141,7 @@ private:
 	void renderStats() {
 		renderStat(0, "Health", 0.3);
 		renderStat(1, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
-		renderStatNum(2, "Aliens killed",game->player.aliensKilled);
+		renderStat(2, "Kills", (double) game->player.aliensKilled / (double) game->initialAlienCount);
 	}
 
 public:

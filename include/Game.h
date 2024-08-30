@@ -15,6 +15,10 @@ enum class Input {
     LEFT, RIGHT, SHOOT, NONE, QUIT
 };
 
+enum class GameState {
+    PLAYING, GAME_OVER, NEXT_LEVEL
+};
+
 class Game {
 public:
     BattleEntity player;
@@ -23,11 +27,14 @@ public:
     vector<Powerup> powerups;
     Bounds bounds;
     unordered_map<int, Input> keyMap;
+    int initialAlienCount;
 
     Game(string identifier);
 
     void update(Input input);
+    void loadAliens();
     void spawnPlayerShoot();
     void spawnPowerup(int alienIndex);
     void applyPowerup(int powerupIndex);
+    GameState getGameState();
 };
