@@ -1,5 +1,9 @@
-compile: ./src/*.cpp
-	g++ -std=c++20 -I./include -lncurses ./src/*.cpp -o ./bin/program
+# Compiler and flags
+CXX := c++
+CXXFLAGS := -Wall -std=c++20
+INCLUDES := -I./include -I/mingw64/include/ncurses -I/mingw64/include/boost
+LDFLAGS := -L/mingw64/lib
+LDLIBS := -lncursesw -lboost_unit_test_framework-mt
 
 # Directories and files
 SRCDIR := ./src
