@@ -1,5 +1,7 @@
 {
 	"alien": {
 		"powerups": ["healthBoost", "damageBoost"],
+		"minShootDelay": 1000,
+		"maxShootDelay": 10000
 	}
 }

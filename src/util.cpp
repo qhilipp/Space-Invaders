@@ -3,15 +3,17 @@
 #include <iostream>
 #include <fstream>
 #include <ncurses.h>
+#include <sys/time.h>
 
 using namespace std;
 
-size_t checkForEnd(string json, size_t start){ //Check whether string ends with "," or "}"
+// Check whether string ends with "," or "}"
+size_t checkForEnd(string json, size_t start) {
     size_t end1 = json.find_first_of(",", start);
     size_t end2 = json.find_first_of("}", start);
-    if(end1 <end2) return end1; //If next "," comes before next "}", then return position of it. Else return position of "}"
-    return end2;
 
+    // If next "," comes before next "}", then return position of it. Else return position of "}"
+    return min(end1, end2);
 }
 
 vector<string> split(const string& str, const string& delimiter) {
@@ -211,4 +213,14 @@ int getRandomIndex(vector<double>& probabilities) {
     }
 
     return -1;
+}
+
+long int getTime() {
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return tp.tv_sec * 1000 + tp.tv_usec / 1000;
+}
+
+int getRandom(int min, int max) {
+    return rand() % (max - min) + min;
 }

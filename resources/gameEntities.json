@@ -34,7 +34,7 @@
 			"x": 3,
 			"y": 0
 		},
-		"terminalVelocity": 4,
+		"terminalVelocity": 0,
 		"drag": 1.0,
 		"boundsBehaviour": "bouncedown"
 	},

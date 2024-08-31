@@ -5,7 +5,7 @@
 		"bullet": "laser"
 	},
 	"alien": {
-		"healthPoints": 100,
+		"healthPoints": 200,
 		"bursts": 1,
 		"bullet": "laser"
 	}

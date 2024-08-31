@@ -24,9 +24,12 @@ public:
     BattleEntity player;
     vector<Alien> aliens;
     vector<Bullet> bullets;
+    vector<Bullet> alienBullets;
     vector<Powerup> powerups;
     Bounds bounds;
     unordered_map<int, Input> keyMap;
+    double alienSpeedGain;
+    double alienHealthGainFactor;
     int initialAlienCount;
     int level;
 
@@ -35,7 +38,8 @@ public:
     void update(Input input);
     void loadAliens();
     void spawnPlayerShoot();
-    void spawnPowerup(int alienIndex);
+    void hitAlien(int alienIndex);
     void applyPowerup(int powerupIndex);
+    void updateBounds(Bounds bounds);
     GameState getGameState();
 };

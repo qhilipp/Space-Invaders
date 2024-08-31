@@ -1,9 +1,9 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include <sys/time.h>
 #include <ctime>
 #include <unistd.h>
+#include <math.h>
 #include "Game.h"
 #include "util.h"
 
@@ -11,18 +11,24 @@ using namespace std;
 
 string originalIdentifier;
 
-Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 210, 55)) {
+Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)) {
     originalIdentifier = identifier;
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
-    
-    loadAliens();
+    player.shootingDirection = -1;
+    alienSpeedGain = jsonDoubleValue(json, "alienSpeedGain");
+    alienHealthGainFactor = jsonDoubleValue(json, "alienHealthGainFactor");
     
     keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;
     keyMap[getKeyCode(jsonStringValue(json, "right"))] = Input::RIGHT;
     keyMap[getKeyCode(jsonStringValue(json, "shoot"))] = Input::SHOOT;
+}
 
-    srand(static_cast<unsigned int>(std::time(0)));
+void Game::updateBounds(Bounds bounds) {
+    this->bounds = bounds;
+    player.position.x = (bounds.size.x - player.getBounds().size.x) / 2;
+    player.position.y = bounds.size.y - player.getBounds().size.y - 1;
+    loadAliens();
 }
 
 void Game::update(Input input) {
@@ -34,7 +40,10 @@ void Game::update(Input input) {
         player.movingDirection.x = 1;
     }
     if(input == Input::SHOOT) {
-        spawnPlayerShoot();
+        optional<Bullet> bullet = player.shoot();
+        if(bullet.has_value()) {
+            bullets.push_back(bullet.value());
+        }
     }
     player.update(*this);
     for(int i = 0; i < powerups.size(); i++) {
@@ -50,15 +59,28 @@ void Game::update(Input input) {
         if(bullets[i].position.y < -100) bullets.erase(bullets.begin() + i);
         for(int j = 0; j < aliens.size(); j++) {
             if(bullets[i].getBounds().collides(aliens[j].getBounds())) {
-                spawnPowerup(j);
+                hitAlien(j);
                 bullets.erase(bullets.begin() + i);
                 break;
             }
         }
     }
 
+    for(int i = alienBullets.size() -1 ; i >= 0; i--) {
+        alienBullets[i].update(*this);
+        if(alienBullets[i].position.y < -100) alienBullets.erase(alienBullets.begin() + i);
+        if(alienBullets[i].getBounds().collides(player.getBounds())) {
+            player.healthPoints = max(0, player.healthPoints - alienBullets[i].damage);
+            alienBullets.erase(alienBullets.begin() + i);
+        }
+    }
+
     for(int i = 0; i < aliens.size(); i++) {
         aliens[i].update(*this);
+        optional<Bullet> bullet = aliens[i].autoShoot();
+        if(bullet.has_value()) {
+            alienBullets.push_back(bullet.value());
+        }
         if(aliens[i].position.y < -100) aliens.erase(aliens.begin() + i);
     }
 
@@ -81,53 +103,27 @@ GameState Game::getGameState() {
 }
 
 void Game::loadAliens() {
-    level++;
     string json = getJSON(originalIdentifier, "games");
     vector<string> alienRows = jsonStringArrayValue(json, "aliens");
     aliens = {};
     for(int i = 0; i < alienRows.size(); i++) {
         Alien alien = Alien(alienRows[i]);
-        alien.position = Point(i * (alien.getBounds().size.x + 4), 5);
+        alien.position = Point(i * (alien.getBounds().size.x + 4) + bounds.position.x, 5);
         alien.movingDirection = Point(1, 1);
+        alien.terminalVelocity += alienSpeedGain * level;
+        alien.maxHealthPoints *= pow(alienHealthGainFactor, level);
+        alien.healthPoints = alien.maxHealthPoints;
         aliens.push_back(alien);
     }
     initialAlienCount = aliens.size();
+    level++;
 }
 
-long int getTime() {
-    struct timeval tp;
-    gettimeofday(&tp, NULL);
-    return tp.tv_sec * 1000 + tp.tv_usec / 1000;
-}
+void Game::hitAlien(int alienIndex) {
+    aliens[alienIndex].healthPoints -= player.bullet.damage;
 
-void Game::spawnPlayerShoot() { 
-    // Check if the delay between bursts has passed and if all bursts have been fired
-    if (getTime() - player.lastShotTime < player.bullet.delay) {
-        if (player.burstsFired >= player.bursts) {
-            //return; // If we already fired all bursts, return
-        }
-    } else {
-        // If the full delay has passed, reset for a new burst sequence
-        player.burstsFired = 0;
-        player.lastShotTime = getTime();
-    }
+    if(aliens[alienIndex].healthPoints > 0) return;
 
-    // Check if we are within the time to fire the next bullet in the burst
-    if (getTime() - player.lastShotTime < player.bullet.delay / 5) {
-        //return; // Not yet time to fire the next bullet in the burst
-    }
-    player.lastShotTime = getTime();
-    
-    // Create and position the bullet
-    Bullet b = player.bullet;
-    b.position.x = player.position.x + player.getBounds().size.x / 2;
-    b.position.y = player.position.y;
-    b.movingDirection = Point(0, -1);
-    bullets.push_back(b);
-    player.burstsFired++;
-}
-
-void Game::spawnPowerup(int alienIndex) {
     vector<double> probabilities;
     for(Powerup p : aliens[alienIndex].powerups) {
         probabilities.push_back(p.probability);
@@ -144,11 +140,11 @@ void Game::spawnPowerup(int alienIndex) {
     }
 
     aliens.erase(aliens.begin() + alienIndex);
-    player.aliensKilled++;
+    player.kills++;
 }
 
 void Game::applyPowerup(int powerupIndex) {
-    if(powerups[powerupIndex].effect == "health") player.healthPoints += powerups[powerupIndex].value;
+    if(powerups[powerupIndex].effect == "health") player.healthPoints = min(player.maxHealthPoints, player.healthPoints + powerups[powerupIndex].value);
     if(powerups[powerupIndex].effect == "bursts") player.bursts += powerups[powerupIndex].value;
     if(powerups[powerupIndex].effect == "damage") player.bullet.damage += powerups[powerupIndex].value;
     powerups.erase(powerups.begin() + powerupIndex);

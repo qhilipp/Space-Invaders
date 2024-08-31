@@ -12,6 +12,8 @@
 
 using namespace std;
 
+int statSize = 30;
+
 class View {
 
 private:
@@ -21,7 +23,9 @@ public:
 	View(Game* game) {
 		setup();
 		this->game = game;
-		getmaxyx(stdscr, game->bounds.size.y, game->bounds.size.x);
+		int width, height;
+		getmaxyx(stdscr, height, width);
+		game->updateBounds(Bounds(statSize, 0, width - statSize, height));
 	}
 
 private:
@@ -112,12 +116,8 @@ private:
 	}
 
 	void renderStatNum(int row, const string& name, int value) {
-		std::string count = std::to_string(value);
-		attron(COLOR_PAIR(1));
-		mvprintw(row, 0, name.c_str());
-		printw(": ");
-		printw(count.c_str());
-		move(row, 10);
+		renderStatBegining(row, name);
+		printw(to_string(value).c_str());
 	}
 
 	void renderStat(int row, const string& name, double value) {
@@ -140,23 +140,28 @@ private:
 
 	void renderStats() {
 		renderStatNum(0, "Level", game->level);
-		renderStat(1, "Health", 0.3);
+		renderStat(1, "Health", game->player.healthPoints / (double) game->player.maxHealthPoints);
 		renderStat(2, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
-		//renderStat(3, "Kills", (double) game->player.aliensKilled / (double) game->initialAlienCount);
-		renderStatNum(4, "Count", game->aliens.size());
+		renderStatNum(3, "Kills", game->player.kills);
+		renderStatNum(4, "Damage", game->player.bullet.damage);
+		renderStatNum(5, "Shots", game->player.burstsFired);
+		if(game->player.burstsFired != 0) renderStat(6, "Quote", game->player.kills / (double) game->player.burstsFired);
 	}
 
 public:
 	void render() {
 		clear();
+		for(Bullet bullet : game->bullets) {
+			renderEntity(bullet);
+		}
+		for(Bullet bullet : game->alienBullets) {
+			renderEntity(bullet);
+		}
 		for(BattleEntity alien : game->aliens) {
 			renderEntity(alien);
 		}
 		for(Powerup powerup : game->powerups) {
 			renderEntity(powerup);
-		}
-		for(Bullet bullet : game->bullets) {
-			renderEntity(bullet);
 		}
 		renderEntity(game->player);
 		renderStats();
