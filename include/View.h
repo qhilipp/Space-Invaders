@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <math.h>
 #include "BattleEntity.h"
 #include "Game.h"
 #include "Bullet.h"
@@ -12,7 +13,7 @@
 
 using namespace std;
 
-int statSize = 30;
+int statSize = 32;
 
 class View {
 
@@ -108,9 +109,13 @@ private:
 	    }
 	}
 
-	void renderStatBegining(int row, const string& name) {
+	void renderText(int row, const string& name) {
 		attron(COLOR_PAIR(1));
 		mvprintw(row, 0, name.c_str());
+	}
+
+	void renderStatBegining(int row, const string& name) {
+		renderText(row, name);
 		printw(": ");
 		move(row, 10);
 	}
@@ -121,6 +126,7 @@ private:
 	}
 
 	void renderStat(int row, const string& name, double value) {
+		value = max(0.0, min(1.0, value));
 		int maxLength = 20;
 		int length = (int) (value * maxLength);
 		int remaining = maxLength - length;
@@ -145,7 +151,9 @@ private:
 		renderStatNum(3, "Kills", game->player.kills);
 		renderStatNum(4, "Damage", game->player.bullet.damage);
 		renderStatNum(5, "Shots", game->player.burstsFired);
-		if(game->player.burstsFired != 0) renderStat(6, "Quote", game->player.kills / (double) game->player.burstsFired);
+		if(game->player.burstsFired != 0) renderStat(6, "KillRate", game->player.kills / (double) game->player.burstsFired);
+		else renderStat(6, "KillRate", 1);
+		if(game->state == GameState::GAME_OVER) renderText(10, "GAME OVER - R to restart");
 	}
 
 public:
@@ -165,5 +173,6 @@ public:
 		}
 		renderEntity(game->player);
 		renderStats();
+		if(game->state == GameState::GAME_OVER) renderEntity(game->gameOverText);
 	}
 };

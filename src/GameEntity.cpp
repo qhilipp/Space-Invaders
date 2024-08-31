@@ -28,13 +28,11 @@ GameEntity::GameEntity(string identifier)
     }
 
     string json = getJSON(identifier, "gameEntities");
-    string positionJSON = jsonObjectValue(json, "position");
-    position.x = jsonDoubleValue(positionJSON, "x");
-    position.y = jsonDoubleValue(positionJSON, "y");
-
+    
     string accelerationJSON = jsonObjectValue(json, "acceleration");
     acceleration.x = jsonDoubleValue(accelerationJSON, "x");
     acceleration.y = jsonDoubleValue(accelerationJSON, "y");
+    
     terminalVelocity = jsonDoubleValue(json, "terminalVelocity");
     drag = jsonDoubleValue(json, "drag");
     boundsBehaviour = jsonStringValue(json, "boundsBehaviour");
