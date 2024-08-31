@@ -1,9 +1,9 @@
 # Compiler and flags
 CXX := c++
 CXXFLAGS := -Wall -std=c++20
-INCLUDES := -I./include -I/opt/homebrew/include
-LDFLAGS := -L/usr/local/lib -L/opt/homebrew/lib 
-LDLIBS := -lncurses -lboost_unit_test_framework
+INCLUDES := -I./include -I/mingw64/include/ncurses -I/mingw64/include/boost
+LDFLAGS := -L/mingw64/lib
+LDLIBS := -lncursesw -lboost_unit_test_framework-mt
 
 # Directories and files
 SRCDIR := ./src
@@ -21,7 +21,7 @@ TEST_OBJS := $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%.o,$(TEST_SRCS))
 all: game tests
 
 game: $(GAME_OBJS)
-	$(CXX) $^ -o $(BINDIR)/game $(LDLIBS)
+	$(CXX) $^ -o $(BINDIR)/game $(LDFLAGS) $(LDLIBS)
 
 tests: $(TEST_OBJS) $(BINDIR)/util.o  # Include util.o for test
 	$(CXX) $^ -o $(BINDIR)/tests $(LDFLAGS) $(LDLIBS)
