@@ -5,7 +5,7 @@
 	},
 	"bomb": {
 		"damage": 600,
-		"delay": 500
+		"delay": 1500
 	},
 	"alienLaser": {
 		"damage": 40,

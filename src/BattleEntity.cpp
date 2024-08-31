@@ -15,11 +15,8 @@ BattleEntity::BattleEntity(string identifier): GameEntity(identifier), bullet(Bu
 
 optional<Bullet> BattleEntity::burstShoot() {
     if(burstsFired < bursts && burstsFired > 0) {
-        if((getTime() - lastShot) > bullet.delay/3)
-        return shoot(true);
-        else{
-            return nullopt;
-        }
+        if(getTime() - lastShot > bullet.delay / bursts) return shoot(true);
+        return nullopt;
     }
     burstsFired = 0;
     return nullopt;
