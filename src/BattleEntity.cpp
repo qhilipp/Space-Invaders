@@ -13,23 +13,18 @@ BattleEntity::BattleEntity(string identifier): GameEntity(identifier), bullet(Bu
     lastShot = getTime();
 }
 
-optional<Bullet> BattleEntity::burstShoot(){
-if(burstsFired< bursts && burstsFired >0){
-    return shoot(true);
-}
-else{
+optional<Bullet> BattleEntity::burstShoot() {
+    if(burstsFired < bursts && burstsFired > 0) {
+        return shoot(true);
+    }
     burstsFired = 0;
     return nullopt;
 }
 
-}
-
 optional<Bullet> BattleEntity::shoot(bool isBurst) {
     // Check if we are within the time to fire the next bullet in the burst
-    if (getTime() - lastShot < bullet.delay) {
-        if(!isBurst){
+    if (getTime() - lastShot < bullet.delay && !isBurst) {
         return nullopt; // Not yet time to fire the next bullet in the burst
-    }
     }
     lastShot = getTime();
     

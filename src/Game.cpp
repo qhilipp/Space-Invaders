@@ -30,7 +30,7 @@ void Game::updateBounds(Bounds bounds) {
     player.position.x = (bounds.size.x - player.getBounds().size.x) / 2 + bounds.position.x;
     player.position.y = bounds.size.y - player.getBounds().size.y - 1;
 
-    gameOverText.position.x = (bounds.size.x - gameOverText.getBounds().size.x) / 2;
+    gameOverText.position.x = ((bounds.size.x + bounds.position.x) - gameOverText.getBounds().size.x) / 2;
     gameOverText.position.y = (bounds.size.y - gameOverText.getBounds().size.y) / 2;
 
     loadAliens();
@@ -51,11 +51,14 @@ void Game::update(Input input) {
             bullets.push_back(bullet.value());
         }
     }
+    
     player.update(*this);
     optional<Bullet> b = player.burstShoot();
+
     if(b.has_value()) {
-            bullets.push_back(b.value());
-        }
+        bullets.push_back(b.value());
+    }
+
     for(int i = 0; i < powerups.size(); i++) {
         powerups[i].update(*this);
         if(powerups[i].position.y < -100) powerups.erase(powerups.begin() + i);
