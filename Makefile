@@ -1,27 +1,45 @@
-CXX	:= c++
+# Compiler and flags
+CXX := c++
 CXXFLAGS := -Wall -std=c++20
+INCLUDES := -I./include -I/mingw64/include/ncurses -I/mingw64/include/boost
+LDFLAGS := -L/mingw64/lib
+LDLIBS := -lncursesw -lboost_unit_test_framework-mt
 
-# Contain path for any includes (headers)
-# Depending on your platform: Include a path to boost, on linux should be 
-# /usr/local/include, on mac could be /opt/homebrew/include
-INCLUDES := -I./include -I/usr/local/include 
-
-# Contains libraries we need to (-L is directory search path, -l is lib)
-LDFLAGS = -L/usr/local/lib -L/usr/local/lib 
-LDLIBS = -lncurses -lboost_unit_test_framework
-
+# Directories and files
 SRCDIR := ./src
+BINDIR := ./bin
+TESTDIR := ./tests
 
-game:
-	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+GAME_SRCS := $(wildcard $(SRCDIR)/*.cpp)
+GAME_OBJS := $(patsubst $(SRCDIR)/%.cpp,$(BINDIR)/%.o,$(GAME_SRCS))
 
-tests:
-	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+# Test files
+TEST_SRCS := $(wildcard $(TESTDIR)/*.cpp)
+TEST_OBJS := $(patsubst $(TESTDIR)/%.cpp,$(BINDIR)/%.o,$(TEST_SRCS))
 
-%.o:
-	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $^ -o $@
+# Targets
+all: game tests
+
+game: $(GAME_OBJS)
+	$(CXX) $^ -o $(BINDIR)/game $(LDFLAGS) $(LDLIBS)
+
+tests: $(TEST_OBJS) $(BINDIR)/util.o  # Include util.o for test
+	$(CXX) $^ -o $(BINDIR)/tests $(LDFLAGS) $(LDLIBS)
+
+$(BINDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(BINDIR)/%.o: $(TESTDIR)/%.cpp
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	test ! -f game || rm game
-	test ! -f tests || rm tests
-	rm *.o
+	$(RM) $(BINDIR)/game $(BINDIR)/tests
+	$(RM) $(BINDIR)/*.o
+
+run: $(BINDIR)/game
+	./$(BINDIR)/game
+
+run_tests: $(BINDIR)/tests
+	./$(BINDIR)/tests
