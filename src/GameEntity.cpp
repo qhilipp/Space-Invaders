@@ -35,7 +35,7 @@ GameEntity::GameEntity(string identifier)
     
     terminalVelocity = jsonDoubleValue(json, "terminalVelocity");
     drag = jsonDoubleValue(json, "drag");
-    boundsBehaviour = jsonStringValue(json, "boundsBehaviour");
+    boundsBehavior = jsonStringValue(json, "boundsBehavior");
 }
 
 void GameEntity::update(Game& game) {
@@ -48,7 +48,7 @@ void GameEntity::update(Game& game) {
     Point updatedPosition = position + velocity;
     position = updatedPosition;
 
-    if(boundsBehaviour.find("down") != string::npos) {
+    if(boundsBehavior.find("down") != string::npos) {
         if(
             position.x < game.bounds.position.x ||
             position.x + getBounds().size.x > game.bounds.position.x + game.bounds.size.x
@@ -56,7 +56,7 @@ void GameEntity::update(Game& game) {
             position.y += 5;//getBounds().size.y;
         }
     }
-    if(boundsBehaviour.find("stop") != string::npos) {
+    if(boundsBehavior.find("stop") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x;
             velocity.x = 0;
@@ -74,7 +74,7 @@ void GameEntity::update(Game& game) {
             velocity.y = 0;
         }
     }
-    if(boundsBehaviour.find("teleport") != string::npos) {
+    if(boundsBehavior.find("teleport") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x + game.bounds.size.x - getBounds().size.x;
         }
@@ -88,7 +88,7 @@ void GameEntity::update(Game& game) {
             position.y = game.bounds.position.y;
         }
     }
-    if(boundsBehaviour.find("bounce") != string::npos) {
+    if(boundsBehavior.find("bounce") != string::npos) {
         if(position.x < game.bounds.position.x) {
             position.x = game.bounds.position.x;
             velocity.x *= -1;
@@ -110,7 +110,7 @@ void GameEntity::update(Game& game) {
             movingDirection.y *= -1;
         }
     }
-    if(boundsBehaviour.find("delete") != string::npos) {
+    if(boundsBehavior.find("delete") != string::npos) {
         if(
             position.x + getBounds().size.x < game.bounds.position.x ||
             position.x > game.bounds.position.x + game.bounds.size.x ||

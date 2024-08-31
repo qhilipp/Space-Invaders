@@ -22,6 +22,7 @@ Controller::Controller() {
 		if(input == 'r' && game->state == GameState::GAME_OVER) {
 			game = new Game("defaultGame");
 			view = new View(game);
+			input = -1;
 		}
 		usleep(30000);
 	}

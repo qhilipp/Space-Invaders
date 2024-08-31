@@ -38,7 +38,9 @@ void Game::updateBounds(Bounds bounds) {
 
 void Game::update(Input input) {
     if(frozen) return;
+    score++;
     player.movingDirection = Point();
+    
     if(input == Input::LEFT) {
         player.movingDirection.x = -1;
     }
@@ -147,7 +149,6 @@ void Game::hitAlien(int alienIndex) {
     }
 
     int powerupIndex = getRandomIndex(probabilities);
-    cout << probabilities.size() << " ";
 
     if(powerupIndex != -1) {
         Powerup p = aliens[alienIndex].powerups[powerupIndex];
@@ -156,8 +157,9 @@ void Game::hitAlien(int alienIndex) {
         powerups.push_back(p);
     }
 
-    aliens.erase(aliens.begin() + alienIndex);
+    score += aliens[alienIndex].points;
     player.kills++;
+    aliens.erase(aliens.begin() + alienIndex);
 }
 
 void Game::applyPowerup(int powerupIndex) {

@@ -2,6 +2,13 @@
 	"alien": {
 		"powerups": ["healthBoost", "damageBoost"],
 		"minShootDelay": 1000,
-		"maxShootDelay": 10000
+		"maxShootDelay": 10000,
+		"points": 100
+	},
+	"coolAlien": {
+		"powerups": ["burstBoost", "healthBoost", "damageBoost"],
+		"minShootDelay": 500,
+		"maxShootDelay": 1500,
+		"points": 1000
 	}
 }

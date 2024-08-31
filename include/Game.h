@@ -32,7 +32,7 @@ public:
     double alienSpeedGain;
     double alienHealthGainFactor;
     int initialAlienCount;
-    int level;
+    int level = 0, score = 0;
     bool frozen = false;
     GameState state = GameState::PLAYING;
 

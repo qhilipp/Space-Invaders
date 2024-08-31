@@ -6,7 +6,7 @@
 		},
 		"terminalVelocity": 10,
 		"drag": 1.05,
-		"boundsBehaviour": "bounce"
+		"boundsBehavior": "bounce"
 	},
 	"laser": {
 		"acceleration": {
@@ -15,16 +15,43 @@
 		},
 		"terminalVelocity": 2,
 		"drag": 1.0,
-		"boundsBehaviour": "delete"
+		"boundsBehavior": "delete"
+	},
+	"bomb": {
+		"acceleration": {
+			"x": 0,
+			"y": 0.1
+		},
+		"terminalVelocity": 1,
+		"drag": 1.0,
+		"boundsBehavior": "delete"
+	},
+	"alienLaser": {
+		"acceleration": {
+			"x": 0,
+			"y": 5
+		},
+		"terminalVelocity": 2,
+		"drag": 1.0,
+		"boundsBehavior": "delete"
 	},
 	"alien": {
 		"acceleration": {
-			"x": 0.05,
+			"x": 1,
 			"y": 0
 		},
 		"terminalVelocity": 0.5,
 		"drag": 1.0,
-		"boundsBehaviour": "bouncedown"
+		"boundsBehavior": "bouncedown"
+	},
+	"coolAlien": {
+		"acceleration": {
+			"x": 1,
+			"y": 0
+		},
+		"terminalVelocity": 0.5,
+		"drag": 1.0,
+		"boundsBehavior": "bouncedown"
 	},
 	"gameOver": {
 		"acceleration": {
@@ -33,7 +60,7 @@
 		},
 		"terminalVelocity": 0,
 		"drag": 1,
-		"boundsBehaviour": "bounce"
+		"boundsBehavior": "bounce"
 	},
 	"healthBoost": {
 		"acceleration": {
@@ -42,7 +69,7 @@
 		},
 		"terminalVelocity": 4,
 		"drag": 1.0,
-		"boundsBehaviour": "bounce"
+		"boundsBehavior": "bounce"
 	},
 	"damageBoost": {
 		"acceleration": {
@@ -51,15 +78,15 @@
 		},
 		"terminalVelocity": 4,
 		"drag": 1.0,
-		"boundsBehaviour": "bounce"
+		"boundsBehavior": "bounce"
 	},
-	"burstsBoost": {
+	"burstBoost": {
 		"acceleration": {
 			"x": 4,
 			"y": -7
 		},
 		"terminalVelocity": 4,
 		"drag": 1.0,
-		"boundsBehaviour": "bounce"
+		"boundsBehavior": "bounce"
 	}
 }
