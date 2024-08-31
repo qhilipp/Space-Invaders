@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)), gameOverText(GameEntity("gameOver")), identifier(identifier) {
+Game::Game(string identifier): player(BattleEntity("player")), identifier(identifier) {
     loadGame();
 }
 
@@ -88,7 +88,7 @@ void Game::update(Input input) {
         bullets.push_back(b.value());
     }
 
-    for(int i = 0; i < powerups.size(); i++) {
+    for(int i = 0; i < (int) powerups.size(); i++) {
         powerups[i].update(*this);
         if(powerups[i].position.y < -100) powerups.erase(powerups.begin() + i);
         if(powerups[i].getBounds().collides(player.getBounds())) {
@@ -96,7 +96,7 @@ void Game::update(Input input) {
         }
     }
 
-    for(int i = bullets.size() - 1; i >= 0; i--) {
+    for(int i = (int) bullets.size() - 1; i >= 0; i--) {
         bullets[i].update(*this);
         if(bullets[i].position.y < -100) bullets.erase(bullets.begin() + i);
         for(int j = 0; j < aliens.size(); j++) {
@@ -108,7 +108,7 @@ void Game::update(Input input) {
         }
     }
 
-    for(int i = alienBullets.size() -1 ; i >= 0; i--) {
+    for(int i = (int) alienBullets.size() -1 ; i >= 0; i--) {
         alienBullets[i].update(*this);
         if(alienBullets[i].position.y < -100) alienBullets.erase(alienBullets.begin() + i);
         if(alienBullets[i].getBounds().collides(player.getBounds())) {
@@ -117,7 +117,7 @@ void Game::update(Input input) {
         }
     }
 
-    for(int i = 0; i < aliens.size(); i++) {
+    for(int i = 0; i < (int) aliens.size(); i++) {
         aliens[i].update(*this);
         optional<Bullet> bullet = aliens[i].autoShoot();
         if(bullet.has_value()) {
@@ -136,7 +136,7 @@ void Game::update(Input input) {
 }
 
 GameState Game::getGameState() {
-    for(int i = 0; i < aliens.size(); i++) {
+    for(int i = 0; i < (int) aliens.size(); i++) {
         if(aliens[i].position.y >= bounds.size.y - player.getBounds().size.y) {
             return GameState::GAME_OVER;
         }
@@ -165,7 +165,7 @@ void Game::loadAliens() {
     aliensWidth -= 4;
     int offset = (bounds.size.x - aliensWidth) / 2 + bounds.position.x;
     int accumulation = 0;
-    for(int i = 0; i < aliens.size(); i++) {
+    for(int i = 0; i < (int) aliens.size(); i++) {
         aliens[i].position.x = offset + accumulation;
         accumulation += aliens[i].getBounds().size.x + 4;
     }

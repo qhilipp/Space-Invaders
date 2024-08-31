@@ -122,7 +122,7 @@ private:
 
 	void renderStatNum(int row, const string& name, int value) {
 		renderStatBegining(row, name);
-		printw(to_string(value).c_str());
+		printw("%s", to_string(value).c_str());
 	}
 
 	void renderStat(int row, const string& name, double value) {
@@ -131,16 +131,16 @@ private:
 		int length = (int) (value * maxLength);
 		int remaining = maxLength - length;
 		renderStatBegining(row, name);
-		printw(string(length, '#').c_str());
+		printw("%s", string(length, '#').c_str());
 		attroff(COLOR_PAIR(1));
 		attron(COLOR_PAIR(2));
-		printw(string(remaining, '#').c_str());
+		printw("%s", string(remaining, '#').c_str());
 		attroff(COLOR_PAIR(2));
 	}
 
 	void renderStat(int row, const string& name, string value) {
 		renderStatBegining(row, name);
-		printw(value.c_str());
+		printw("%s", value.c_str());
 		attroff(COLOR_PAIR(1));
 	}
 

@@ -21,14 +21,14 @@ enum class GameState {
 
 class Game {
 public:
-    GameEntity gameOverText;
+    GameEntity gameOverText = GameEntity("gameOverText");
     BattleEntity player;
     vector<Alien> aliens;
     vector<Bullet> bullets;
     vector<Bullet> alienBullets;
     vector<Powerup> powerups;
     string identifier;
-    Bounds bounds;
+    Bounds bounds = Bounds(0, 0, 0, 0);
     unordered_map<int, Input> keyMap;
     double alienSpeedGain;
     double alienHealthGainFactor;

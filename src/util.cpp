@@ -205,7 +205,7 @@ int getRandomIndex(vector<double>& probabilities) {
     double randomValue = (rand() % 101) / 100.0;
 
     double cumulativeSum = 0.0;
-    for (int i = 0; i < probabilities.size(); ++i) {
+    for(int i = 0; i < (int) probabilities.size(); ++i) {
         cumulativeSum += probabilities[i];
         if (randomValue <= cumulativeSum) {
             return i;
