@@ -17,7 +17,7 @@ Alien::Alien(string identifier): BattleEntity(identifier) {
 }
 
 optional<Bullet> Alien::autoShoot() {
-    optional<Bullet> bullet = shoot();
+    optional<Bullet> bullet = shoot(false);
     if(bullet.has_value()) {
         this->bullet.delay = getRandom(minShootDelay, maxShootDelay);
     }

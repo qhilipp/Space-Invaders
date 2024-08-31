@@ -100,7 +100,7 @@ private:
 	            int textureColor = getColor(entity.textureImg, i, j);
 	            int colorPair = getColorPair(textureColor, baseColor);
 
-	            if(isTransparent(entity.baseImg, i, j) && isTransparent(entity.textureImg, i, j)) continue;
+	            if(isTransparent(entity.baseImg, i, j) && (isTransparent(entity.textureImg, i, j) || entity.texture[j][i] == ' ')) continue;
 
 	            attron(COLOR_PAIR(colorPair));
 	            mvaddch(j + entity.position.y, i + entity.position.x, entity.texture[j][i]);
@@ -153,7 +153,6 @@ private:
 		renderStatNum(5, "Shots", game->player.burstsFired);
 		if(game->player.burstsFired != 0) renderStat(6, "KillRate", game->player.kills / (double) game->player.burstsFired);
 		else renderStat(6, "KillRate", 1);
-		if(game->state == GameState::GAME_OVER) renderText(10, "GAME OVER - R to restart");
 	}
 
 public:
