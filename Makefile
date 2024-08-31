@@ -13,7 +13,7 @@ LDLIBS = -lncurses -lboost_unit_test_framework
 SRCDIR := ./src
 GAME_OBJECTS := ./bin
 
-game: $(GAME_OBJECTS) main.o
+game: $(GAME_OBJECTS)
 	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 tests: $(GAME_OBJECTS) test_call.o
