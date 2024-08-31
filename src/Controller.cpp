@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <ctime>
+#include <cstdlib>
 #include "View.h"
 #include "Game.h"
 #include "Controller.h"
