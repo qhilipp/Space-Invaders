@@ -4,7 +4,6 @@
 #include <ctime>
 #include <unistd.h>
 #include <math.h>
-#include <ncurses.h>
 #include "Game.h"
 #include "util.h"
 
@@ -59,7 +58,7 @@ void Game::updateBounds(Bounds bounds) {
 void Game::update(Input input) {
     if(input == Input::FREEZE) frozen = !frozen;
     if(input == Input::QUIT) {
-        clear();
+        endwin();
         exit(0);
     }
     if(input == Input::AUTOPILOT) autoPilot = !autoPilot;

@@ -12,10 +12,8 @@ using namespace std;
 Controller::Controller() {
 	game = new Game("selected");
 	view = new View(game);
-	int input = -1;
 	while(true) {
-		input = getch();
-		game->update(getInput(input));
+		game->update(getInput(getch()));
 		view->render();
 		usleep(30000);
 	}
