@@ -4,7 +4,7 @@
 This is an implementation of the classic "Space Invaders" 80's game with great customization options. Even though this game runs in the terminal, it still uses images to display game entities. That's why we recommend to scale down the terminal font, in order to have the optimal gaming experience.
 
 ## Prerequisites
-The **g++ compiler** and **nurses** library are mandatory. The **boost** library is optional for testing.
+The **c++ compiler** and **nurses** library are mandatory. The **boost** library is optional for testing.
 
 ## Installation
 Clone this repository and execute `make` and then `make run` to build and run the game.
