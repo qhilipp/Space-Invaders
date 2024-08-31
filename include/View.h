@@ -111,7 +111,7 @@ private:
 
 	void renderText(int row, const string& name) {
 		attron(COLOR_PAIR(1));
-		mvprintw(row, 0, name.c_str());
+		mvprintw(row, 0, "%s", name.c_str());
 	}
 
 	void renderStatBegining(int row, const string& name) {

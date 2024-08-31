@@ -99,7 +99,7 @@ void Game::update(Input input) {
     for(int i = (int) bullets.size() - 1; i >= 0; i--) {
         bullets[i].update(*this);
         if(bullets[i].position.y < -100) bullets.erase(bullets.begin() + i);
-        for(int j = 0; j < aliens.size(); j++) {
+        for(int j = 0; j < (int) aliens.size(); j++) {
             if(bullets[i].getBounds().collides(aliens[j].getBounds())) {
                 hitAlien(j);
                 bullets.erase(bullets.begin() + i);
@@ -153,7 +153,7 @@ void Game::loadAliens() {
     vector<string> alienIdentifiers = jsonStringArrayValue(json, "aliens");
     aliens = {};
     int aliensWidth = 0;
-    for(int i = 0; i < alienIdentifiers.size(); i++) {
+    for(int i = 0; i < (int) alienIdentifiers.size(); i++) {
         Alien alien = Alien(alienIdentifiers[i]);
         alien.movingDirection = Point(1, 1);
         alien.terminalVelocity += alienSpeedGain * level;
