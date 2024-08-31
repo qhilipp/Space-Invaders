@@ -153,14 +153,22 @@ void Game::loadAliens() {
     string json = getJSON(originalIdentifier, "games");
     vector<string> alienIdentifiers = jsonStringArrayValue(json, "aliens");
     aliens = {};
+    int aliensWidth = 0;
     for(int i = 0; i < alienIdentifiers.size(); i++) {
         Alien alien = Alien(alienIdentifiers[i]);
-        alien.position = Point(i * (alien.getBounds().size.x + 4) + bounds.position.x, 0);
         alien.movingDirection = Point(1, 1);
         alien.terminalVelocity += alienSpeedGain * level;
         alien.maxHealthPoints *= pow(alienHealthGainFactor, level);
         alien.healthPoints = alien.maxHealthPoints;
         aliens.push_back(alien);
+        aliensWidth += alien.getBounds().size.x + 4;
+    }
+    aliensWidth -= 4;
+    int offset = (bounds.size.x - aliensWidth) / 2 + bounds.position.x;
+    int accumulation = 0;
+    for(int i = 0; i < aliens.size(); i++) {
+        aliens[i].position.x = offset + accumulation;
+        accumulation += aliens[i].getBounds().size.x + 4;
     }
     initialAlienCount = aliens.size();
     level++;
