@@ -57,7 +57,10 @@ void Game::updateBounds(Bounds bounds) {
 
 void Game::update(Input input) {
     if(input == Input::FREEZE) frozen = !frozen;
-    if(input == Input::QUIT) exit(0);
+    if(input == Input::QUIT) {
+        clear();
+        exit(0);
+    }
     if(input == Input::AUTOPILOT) autoPilot = !autoPilot;
     if(input == Input::RESTART && state == GameState::GAME_OVER) {
         loadGame();
