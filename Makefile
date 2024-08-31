@@ -11,7 +11,7 @@ LDFLAGS = -L/usr/local/lib -L/opt/homebrew/lib
 LDLIBS = -lncurses -lboost_unit_test_framework
 
 SRCDIR := ./src
-GAME_OBJECTS := controller_console.o model_simulator_game.o observer.o view_console.o
+GAME_OBJECTS := ./bin
 
 game: $(GAME_OBJECTS) main.o
 	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
