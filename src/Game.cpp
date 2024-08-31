@@ -11,7 +11,7 @@ using namespace std;
 
 string originalIdentifier;
 
-Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)) {
+Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)), gameOverText(GameEntity("gameOver")) {
     originalIdentifier = identifier;
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
@@ -26,12 +26,18 @@ Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 
 
 void Game::updateBounds(Bounds bounds) {
     this->bounds = bounds;
-    player.position.x = (bounds.size.x - player.getBounds().size.x) / 2;
+
+    player.position.x = (bounds.size.x - player.getBounds().size.x) / 2 + bounds.position.x;
     player.position.y = bounds.size.y - player.getBounds().size.y - 1;
+
+    gameOverText.position.x = (bounds.size.x - gameOverText.getBounds().size.x) / 2;
+    gameOverText.position.y = (bounds.size.y - gameOverText.getBounds().size.y) / 2;
+
     loadAliens();
 }
 
 void Game::update(Input input) {
+    if(frozen) return;
     player.movingDirection = Point();
     if(input == Input::LEFT) {
         player.movingDirection.x = -1;
@@ -88,9 +94,12 @@ void Game::update(Input input) {
         if(aliens[i].position.y < -100) aliens.erase(aliens.begin() + i);
     }
 
-    GameState gameState = getGameState();
-    if(gameState == GameState::NEXT_LEVEL) {
+    state = getGameState();
+    if(state == GameState::NEXT_LEVEL) {
         loadAliens();
+    }
+    if(state == GameState::GAME_OVER) {
+        frozen = true;
     }
 }
 
@@ -103,16 +112,17 @@ GameState Game::getGameState() {
     if(aliens.size() == 0) {
         return GameState::NEXT_LEVEL;
     }
+    if(player.healthPoints <= 0) return GameState::GAME_OVER;
     return GameState::PLAYING;
 }
 
 void Game::loadAliens() {
     string json = getJSON(originalIdentifier, "games");
-    vector<string> alienRows = jsonStringArrayValue(json, "aliens");
+    vector<string> alienIdentifiers = jsonStringArrayValue(json, "aliens");
     aliens = {};
-    for(int i = 0; i < alienRows.size(); i++) {
-        Alien alien = Alien(alienRows[i]);
-        alien.position = Point(i * (alien.getBounds().size.x + 4) + bounds.position.x, 5);
+    for(int i = 0; i < alienIdentifiers.size(); i++) {
+        Alien alien = Alien(alienIdentifiers[i]);
+        alien.position = Point(i * (alien.getBounds().size.x + 4) + bounds.position.x, 0);
         alien.movingDirection = Point(1, 1);
         alien.terminalVelocity += alienSpeedGain * level;
         alien.maxHealthPoints *= pow(alienHealthGainFactor, level);

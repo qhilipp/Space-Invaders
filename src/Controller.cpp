@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <unistd.h>
-#include <ctime> 
+#include <ctime>
+#include <cstdlib>
 #include "View.h"
 #include "Game.h"
 #include "Controller.h"
@@ -15,15 +16,16 @@ Controller::Controller() {
 	game = new Game("defaultGame");
 	view = new View(game);
 	int input = -1;
-	bool freeze = false;
 	while(true) {
 		input = getch();
-		if(!freeze) {
 		game->update(getInput(input));
 		view->render();
-	}
 		if(input == 't') break;
-		if(input == 'f') freeze = !freeze;
+		if(input == 'f') game->frozen = !game->frozen;
+		if(input == 'r' && game->state == GameState::GAME_OVER) {
+			game = new Game("defaultGame");
+			view = new View(game);
+		}
 		usleep(30000);
 	}
 	endwin();

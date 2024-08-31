@@ -21,6 +21,7 @@ enum class GameState {
 
 class Game {
 public:
+    GameEntity gameOverText;
     BattleEntity player;
     vector<Alien> aliens;
     vector<Bullet> bullets;
@@ -32,14 +33,16 @@ public:
     double alienHealthGainFactor;
     int initialAlienCount;
     int level;
+    bool frozen = false;
+    GameState state = GameState::PLAYING;
 
     Game(string identifier);
 
     void update(Input input);
+    void updateBounds(Bounds bounds);
+    GameState getGameState();
     void loadAliens();
     void spawnPlayerShoot();
     void hitAlien(int alienIndex);
     void applyPowerup(int powerupIndex);
-    void updateBounds(Bounds bounds);
-    GameState getGameState();
 };
