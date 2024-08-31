@@ -46,7 +46,7 @@ void Game::update(Input input) {
         player.movingDirection.x = 1;
     }
     if(input == Input::SHOOT) {
-        optional<Bullet> bullet = player.shoot();
+        optional<Bullet> bullet = player.shoot(false);
         if(bullet.has_value()) {
             bullets.push_back(bullet.value());
         }

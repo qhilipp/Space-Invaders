@@ -20,5 +20,5 @@ public:
     BattleEntity(string identifier);
 
     optional <Bullet> burstShoot();
-    optional<Bullet> shoot();
+    optional<Bullet> shoot(bool isBurst);
 };
