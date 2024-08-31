@@ -46,6 +46,10 @@ void Game::update(Input input) {
         }
     }
     player.update(*this);
+    optional<Bullet> b = player.burstShoot();
+    if(b.has_value()) {
+            bullets.push_back(b.value());
+        }
     for(int i = 0; i < powerups.size(); i++) {
         powerups[i].update(*this);
         if(powerups[i].position.y < -100) powerups.erase(powerups.begin() + i);

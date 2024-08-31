@@ -19,5 +19,6 @@ public:
     BattleEntity(string name, int bursts, int healthPoints, Bullet bullet);
     BattleEntity(string identifier);
 
+    optional <Bullet> burstShoot();
     optional<Bullet> shoot();
 };

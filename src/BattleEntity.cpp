@@ -13,6 +13,17 @@ BattleEntity::BattleEntity(string identifier): GameEntity(identifier), bullet(Bu
     lastShot = getTime();
 }
 
+optional<Bullet> BattleEntity::burstShoot(){
+if(burstsFired< bursts && burstsFired >0){
+    return shoot();
+}
+else{
+    burstsFired = 0;
+    return nullopt;
+}
+
+}
+
 optional<Bullet> BattleEntity::shoot() {
     // Check if we are within the time to fire the next bullet in the burst
     if (getTime() - lastShot < bullet.delay) {
@@ -30,6 +41,5 @@ optional<Bullet> BattleEntity::shoot() {
     }
     b.movingDirection = Point(0, shootingDirection);
     burstsFired++;
-
     return b;
 }
