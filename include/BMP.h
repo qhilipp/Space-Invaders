@@ -1,3 +1,5 @@
+// From https://github.com/sol-prog/cpp-bmp-images?tab=readme-ov-file
+
 #pragma once
 
 #include <fstream>

@@ -1,3 +1,4 @@
+
 # Space Invaders
 
 ## Abstract
@@ -25,6 +26,9 @@ In the repository you will also find a `converter.py` file, which can help you c
 At the basis is the `GameEntity`. GameEntities are objects, that can live within the game. They have a texture, position, velocity, acceleration, etc. New game entities can be added in the gameEntities.json file. Be aware, that not all properties can be set within the json file, since e.g. the position will be determined by the game.
 On the next level are `Powerup`, `BattleEntity` and `Bullet`. `Powerup`s have a probability, with which they spawn, after an alien was killed, an effect, which can be one of the following values: "health", "bursts", "damage" and a value, representing by how much the property specified by effect will be enhanced. `Bullet` is self-explanatory. The player is an instance of`BattleEntity`, which is a `GameEntity` that has healthPoints, the ability to shoot and so on. If you want to add a `BattleEntity`, `Powerup` or `Bullet`, you must also add a `GameEntity`instance with the same name. The same is also true for all other subclasses. The next and last level is the `Alien` class, which is a subclass of `BattleEntity`. An alien has an array of powerups it can drop, the minimum and maximum time interval, that this alien will fire a bullet and the amount of points, the player is rewarded by killing this alien.
 Then, completely separate from all other models is the `Game`, which holds information on which player, aliens, key mappings to use and how the aliens advance with higher levels. The program will load the game called "selected". So to select another game preset, just rename that json object to "selected" and the previous selected one to another arbitrary name.
+
+## Credits
+Everything contained within this directory has been created by our team members Jonah David Stefani, Mohammad Reza Farhoumand and Philipp Kathöfer with the exception of the BMP.h file, which has been copied from [this GitHub repo](https://github.com/sol-prog/cpp-bmp-images?tab=readme-ov-file). Of course we had help from StackOverflow and Chat-GPT, but we did not copy any larger (more than 2 loc) code snippets from any third party source.
 
 ## Side notes
 Since most terminals are not made to be a graphical game environment, the graphics might not look as they do in the .bmp files. The most accurate terminal we could find was the default macOS terminal. Other more modern terminals like Warp try to make text more readable by manipulating the colors, which results in awkward looking game entities. The best terminal on Jupyterhub is "Terminal" and not "Konsole".
