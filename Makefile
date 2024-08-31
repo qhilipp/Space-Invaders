@@ -1,4 +1,4 @@
-CXX	:= g++
+CXX	:= c++
 CXXFLAGS := -Wall -std=c++20
 
 # Contain path for any includes (headers)
@@ -7,28 +7,21 @@ CXXFLAGS := -Wall -std=c++20
 INCLUDES := -I./include -I/usr/local/include 
 
 # Contains libraries we need to (-L is directory search path, -l is lib)
-LDFLAGS = -L/usr/local/lib -L/opt/homebrew/lib 
+LDFLAGS = -L/usr/local/lib -L/usr/local/lib 
 LDLIBS = -lncurses -lboost_unit_test_framework
 
 SRCDIR := ./src
-GAME_OBJECTS := ./bin/program
 
-game: $(GAME_OBJECTS)
+game:
 	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
-tests: $(GAME_OBJECTS) test_call.o
+tests:
 	$(CXX) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
-%.o: $(SRCDIR)/%.cpp
+%.o:
 	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $^ -o $@
 
 clean:
 	test ! -f game || rm game
 	test ! -f tests || rm tests
 	rm *.o
-
-compile: ./src/*.cpp
-	g++ -std=c++20 -I./include -lncurses ./src/*.cpp -o ./bin/program
-
-run: ./bin/program
-	./bin/program
