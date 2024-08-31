@@ -7,7 +7,10 @@ This is an implementation of the classic "Space Invaders" 80's game with great c
 The **g++ compiler** and **nurses** library are mandatory. The **boost** library is optional for testing.
 
 ## Installation
-Clone this repository and execute `make && make run`.
+Clone this repository and execute `make` and then `make run` to build and run the game.
+
+## Testing
+To build the tests execute `make tests` and to run the tests execute `make run_tests`. The test execution might produce some error looking output. E.g. that some key in a json object cannot be found, but that is actually expected behavior, since we also test error cases.
 
 ## Customization
 As mentioned before, this game is highly customizable. Everything can be found in the resources directory. There you will find different json files and other directories. You can play around with the values, but when adding new objects to the json file, you will find that the game no longer works. This is because each json object must correspond to one image directory. An image directory contains three files: `[name]_base.bmp`, `[name]_texture.bmp` and `[name]_texture.txt`. These three files make up the texture for a game entity. The base file is the "background" for the entity, which is overlayed by the `[name]_texture.txt` with the colors of the `[name]_texture.bmp` file. The texture gives the final image more detail. So if you add an object in a json file, you must also add an image directory with that name and the given files. See "Creating textures" to find out more about how you can easily add textures and see "Structure of the models" to find out, how to properly add more objects with the json files.
