@@ -18,10 +18,16 @@ Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 
     player.shootingDirection = -1;
     alienSpeedGain = jsonDoubleValue(json, "alienSpeedGain");
     alienHealthGainFactor = jsonDoubleValue(json, "alienHealthGainFactor");
+
+    string keysJSON = jsonObjectValue(json, "keys");
     
-    keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;
-    keyMap[getKeyCode(jsonStringValue(json, "right"))] = Input::RIGHT;
-    keyMap[getKeyCode(jsonStringValue(json, "shoot"))] = Input::SHOOT;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "left"))] = Input::LEFT;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "right"))] = Input::RIGHT;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "shoot"))] = Input::SHOOT;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "toggleAutopilot"))] = Input::AUTOPILOT;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "toggleFreeze"))] = Input::FREEZE;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "restart"))] = Input::RESTART;
+    keyMap[getKeyCode(jsonStringValue(keysJSON, "quit"))] = Input::QUIT;
 }
 
 void Game::updateBounds(Bounds bounds) {
@@ -37,6 +43,12 @@ void Game::updateBounds(Bounds bounds) {
 }
 
 void Game::update(Input input) {
+    if(input == Input::FREEZE) frozen = !frozen;
+    if(input == Input::QUIT) exit(0);
+    if(input == Input::AUTOPILOT) autoPilot = !autoPilot;
+    if(input == Input::RESTART && state == GameState::GAME_OVER) {
+        loadAliens();
+    }
     if(frozen) return;
     score++;
     player.movingDirection = Point();

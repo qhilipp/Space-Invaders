@@ -12,7 +12,7 @@
 using namespace std;
 
 enum class Input {
-    LEFT, RIGHT, SHOOT, NONE, QUIT
+    LEFT, RIGHT, SHOOT, NONE, QUIT, FREEZE, RESTART, AUTOPILOT
 };
 
 enum class GameState {
@@ -34,6 +34,7 @@ public:
     int initialAlienCount;
     int level = 0, score = 0;
     bool frozen = false;
+    bool autoPilot = false;
     GameState state = GameState::PLAYING;
 
     Game(string identifier);

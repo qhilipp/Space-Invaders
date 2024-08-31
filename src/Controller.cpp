@@ -17,13 +17,6 @@ Controller::Controller() {
 		input = getch();
 		game->update(getInput(input));
 		view->render();
-		if(input == 't') break;
-		if(input == 'f') game->frozen = !game->frozen;
-		if(input == 'r' && game->state == GameState::GAME_OVER) {
-			game = new Game("defaultGame");
-			view = new View(game);
-			input = -1;
-		}
 		usleep(30000);
 	}
 	endwin();

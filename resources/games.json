@@ -6,6 +6,15 @@
 		"shoot": " ",
 		"aliens": ["alien", "alien", "coolAlien", "alien", "alien"],
 		"alienSpeedGain": 0.1,
-		"alienHealthGainFactor": 1.1
+		"alienHealthGainFactor": 1.1,
+		"keys": {
+			"left": "a",
+			"right": "d",
+			"shoot": " ",
+			"toggleAutopilot": "p",
+			"toggleFreeze": "f",
+			"restart": "r",
+			"quit": "t"
+		}
 	}
 }
