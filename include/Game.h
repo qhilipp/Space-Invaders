@@ -27,14 +27,14 @@ public:
     vector<Bullet> bullets;
     vector<Bullet> alienBullets;
     vector<Powerup> powerups;
+    string identifier;
     Bounds bounds;
     unordered_map<int, Input> keyMap;
     double alienSpeedGain;
     double alienHealthGainFactor;
     int initialAlienCount;
-    int level = 0, score = 0;
-    bool frozen = false;
-    bool autoPilot = false;
+    int level, score;
+    bool frozen = false, autoPilot;
     GameState state = GameState::PLAYING;
 
     Game(string identifier);
@@ -46,4 +46,5 @@ public:
     void spawnPlayerShoot();
     void hitAlien(int alienIndex);
     void applyPowerup(int powerupIndex);
+    void loadGame();
 };

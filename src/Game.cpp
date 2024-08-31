@@ -11,8 +11,12 @@ using namespace std;
 
 string originalIdentifier;
 
-Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)), gameOverText(GameEntity("gameOver")) {
+Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)), gameOverText(GameEntity("gameOver")), identifier(identifier) {
     originalIdentifier = identifier;
+    loadGame();
+}
+
+void Game::loadGame() {
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
     player.shootingDirection = -1;
@@ -28,6 +32,18 @@ Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 
     keyMap[getKeyCode(jsonStringValue(keysJSON, "toggleFreeze"))] = Input::FREEZE;
     keyMap[getKeyCode(jsonStringValue(keysJSON, "restart"))] = Input::RESTART;
     keyMap[getKeyCode(jsonStringValue(keysJSON, "quit"))] = Input::QUIT;
+
+    bullets = {};
+    alienBullets = {};
+    powerups = {};
+
+    level = 0;
+    score = 0;
+    frozen = false;
+    autoPilot = false;
+    state = GameState::PLAYING;
+
+    updateBounds(bounds);
 }
 
 void Game::updateBounds(Bounds bounds) {
@@ -47,7 +63,7 @@ void Game::update(Input input) {
     if(input == Input::QUIT) exit(0);
     if(input == Input::AUTOPILOT) autoPilot = !autoPilot;
     if(input == Input::RESTART && state == GameState::GAME_OVER) {
-        loadAliens();
+        loadGame();
     }
     if(frozen) return;
     score++;
