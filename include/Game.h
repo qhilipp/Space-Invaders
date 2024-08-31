@@ -21,7 +21,7 @@ enum class GameState {
 
 class Game {
 public:
-    GameEntity gameOverText = GameEntity("gameOverText");
+    GameEntity gameOverText = GameEntity("gameOver");
     BattleEntity player;
     vector<Alien> aliens;
     vector<Bullet> bullets;
