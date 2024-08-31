@@ -13,7 +13,9 @@ Controller::Controller() {
 	game = new Game("selected");
 	view = new View(game);
 	while(true) {
-		game->update(getInput(getch()));
+		Input input = getInput(getch());
+		if(input == Input::QUIT) break;
+		game->update(input);
 		view->render();
 		usleep(30000);
 	}
