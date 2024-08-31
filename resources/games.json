@@ -1,12 +1,24 @@
 {
-	"defaultGame": {
+	"default": {
 		"player": "player",
-		"left": "a",
-		"right": "d",
-		"shoot": " ",
 		"aliens": ["alien", "alien", "coolAlien", "alien", "alien"],
 		"alienSpeedGain": 0.1,
 		"alienHealthGainFactor": 1.1,
+		"keys": {
+			"left": "a",
+			"right": "d",
+			"shoot": " ",
+			"toggleAutopilot": "p",
+			"toggleFreeze": "f",
+			"restart": "r",
+			"quit": "t"
+		}
+	},
+	"selected": {
+		"player": "tFighter",
+		"aliens": ["alien", "coolAlien", "alien", "coolAlien", "alien", "coolAlien", "alien"],
+		"alienSpeedGain": 0.4,
+		"alienHealthGainFactor": 1.25,
 		"keys": {
 			"left": "a",
 			"right": "d",

@@ -152,8 +152,6 @@ private:
 		renderStatNum(4, "Kills", game->player.kills);
 		renderStatNum(5, "Damage", game->player.bullet.damage);
 		renderStatNum(6, "Shots", game->player.burstsFired);
-		if(game->player.burstsFired != 0) renderStat(7, "KillRate", game->player.kills / (double) game->player.burstsFired);
-		else renderStat(7, "KillRate", 1);
 	}
 
 public:

@@ -9,10 +9,7 @@
 
 using namespace std;
 
-string originalIdentifier;
-
 Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 0, 0)), gameOverText(GameEntity("gameOver")), identifier(identifier) {
-    originalIdentifier = identifier;
     loadGame();
 }
 
@@ -150,7 +147,7 @@ GameState Game::getGameState() {
 }
 
 void Game::loadAliens() {
-    string json = getJSON(originalIdentifier, "games");
+    string json = getJSON(identifier, "games");
     vector<string> alienIdentifiers = jsonStringArrayValue(json, "aliens");
     aliens = {};
     int aliensWidth = 0;

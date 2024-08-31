@@ -10,7 +10,7 @@
 using namespace std;
 
 Controller::Controller() {
-	game = new Game("defaultGame");
+	game = new Game("selected");
 	view = new View(game);
 	int input = -1;
 	while(true) {
