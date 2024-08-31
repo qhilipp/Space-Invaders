@@ -1,7 +1,7 @@
 {
 	"player": {
 		"healthPoints": 100,
-		"bursts": 3,
+		"bursts": 5,
 		"bullet": "laser"
 	},
 	"alien": {
