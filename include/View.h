@@ -146,13 +146,14 @@ private:
 
 	void renderStats() {
 		renderStatNum(0, "Level", game->level);
-		renderStat(1, "Health", game->player.healthPoints / (double) game->player.maxHealthPoints);
-		renderStat(2, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
-		renderStatNum(3, "Kills", game->player.kills);
-		renderStatNum(4, "Damage", game->player.bullet.damage);
-		renderStatNum(5, "Shots", game->player.burstsFired);
-		if(game->player.burstsFired != 0) renderStat(6, "KillRate", game->player.kills / (double) game->player.burstsFired);
-		else renderStat(6, "KillRate", 1);
+		renderStatNum(1, "Score", game->score);
+		renderStat(2, "Health", game->player.healthPoints / (double) game->player.maxHealthPoints);
+		renderStat(3, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
+		renderStatNum(4, "Kills", game->player.kills);
+		renderStatNum(5, "Damage", game->player.bullet.damage);
+		renderStatNum(6, "Shots", game->player.burstsFired);
+		if(game->player.burstsFired != 0) renderStat(7, "KillRate", game->player.kills / (double) game->player.burstsFired);
+		else renderStat(7, "KillRate", 1);
 	}
 
 public:

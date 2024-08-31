@@ -2,5 +2,13 @@
 	"laser": {
 		"damage": 100,
 		"delay": 200
+	},
+	"bomb": {
+		"damage": 600,
+		"delay": 500
+	},
+	"alienLaser": {
+		"damage": 40,
+		"delay": 100
 	}
 }

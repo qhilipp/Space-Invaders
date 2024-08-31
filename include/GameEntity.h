@@ -21,7 +21,7 @@ public:
     double terminalVelocity;
     Point movingDirection;
     double drag;
-    string boundsBehaviour;
+    string boundsBehavior;
     int burstsFired;
     long int lastShotTime;
 

@@ -12,6 +12,7 @@ class Alien: public BattleEntity {
 public:
     vector<Powerup> powerups;
     int minShootDelay, maxShootDelay, currentDelay;
+    int points;
 
     Alien(string identifier);
 

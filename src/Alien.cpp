@@ -11,6 +11,7 @@ Alien::Alien(string identifier): BattleEntity(identifier) {
     minShootDelay = jsonIntValue(json, "minShootDelay");
     maxShootDelay = jsonIntValue(json, "maxShootDelay");
     this->bullet.delay = getRandom(minShootDelay, maxShootDelay);
+    points = jsonIntValue(json, "points");
     for(string powerupIdentifier : jsonStringArrayValue(json, "powerups")) {
         powerups.push_back(Powerup(powerupIdentifier));
     }
