@@ -1,9 +1,9 @@
 # Compiler and flags
 CXX := c++
 CXXFLAGS := -Wall -std=c++20
-INCLUDES := -I./include -I/mingw64/include/ncurses -I/mingw64/include/boost
+INCLUDES := -I./include -I/opt/homebrew/include
 LDFLAGS := -L/mingw64/lib
-LDLIBS := -lncursesw -lboost_unit_test_framework-mt
+LDLIBS := -lncursesw -lboost_unit_test_framework
 
 # Directories and files
 SRCDIR := ./src
