@@ -4,6 +4,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <math.h>
+#include <ncurses>
 #include "Game.h"
 #include "util.h"
 
