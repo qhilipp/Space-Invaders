@@ -190,11 +190,25 @@ int getKeyCode(const string& input) {
     if(input == "up") return KEY_UP;
     if(input == "down") return KEY_DOWN;
     if(input == "") {
-        return ' '; // This is because the json function remove all white spaces
+        return ' '; // This is because the json function removes all white spaces
     }
     if(input.size() != 1) {
         cerr << "Invalid key input " << input;
         return -1;
     }
     return input[0];
+}
+
+int getRandomIndex(vector<double>& probabilities) {
+    double randomValue = (rand() % 101) / 100.0;
+
+    double cumulativeSum = 0.0;
+    for (int i = 0; i < probabilities.size(); ++i) {
+        cumulativeSum += probabilities[i];
+        if (randomValue <= cumulativeSum) {
+            return i;
+        }
+    }
+
+    return -1;
 }

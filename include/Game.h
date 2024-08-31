@@ -28,6 +28,7 @@ public:
     Bounds bounds;
     unordered_map<int, Input> keyMap;
     int initialAlienCount;
+    int level;
 
     Game(string identifier);
 

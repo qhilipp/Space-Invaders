@@ -19,3 +19,4 @@ vector<string> jsonStringArrayValue(const string& json, const string& key);
 vector<double> jsonDoubleArrayValue(const string& json, const string& key);
 string getJSON(const string& identifier, const string& fileName);
 int getKeyCode(const string& input);
+int getRandomIndex(vector<double>& probabilities);

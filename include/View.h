@@ -139,9 +139,11 @@ private:
 	}
 
 	void renderStats() {
-		renderStat(0, "Health", 0.3);
-		renderStat(1, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
-		renderStat(2, "Kills", (double) game->player.aliensKilled / (double) game->initialAlienCount);
+		renderStatNum(0, "Level", game->level);
+		renderStat(1, "Health", 0.3);
+		renderStat(2, "Speed", game->player.velocity.length() / game->player.terminalVelocity);
+		//renderStat(3, "Kills", (double) game->player.aliensKilled / (double) game->initialAlienCount);
+		renderStatNum(4, "Count", game->aliens.size());
 	}
 
 public:

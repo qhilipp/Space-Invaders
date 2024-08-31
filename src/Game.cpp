@@ -2,24 +2,27 @@
 #include <iostream>
 #include <algorithm>
 #include <sys/time.h>
+#include <ctime>
+#include <unistd.h>
 #include "Game.h"
 #include "util.h"
-#include <unistd.h>
-
 
 using namespace std;
 
 string originalIdentifier;
 
 Game::Game(string identifier): player(BattleEntity("player")), bounds(Bounds(0, 0, 210, 55)) {
-    aliens = {};
     originalIdentifier = identifier;
     string json = getJSON(identifier, "games");
     player = BattleEntity(jsonStringValue(json, "player"));
+    
     loadAliens();
+    
     keyMap[getKeyCode(jsonStringValue(json, "left"))] = Input::LEFT;
     keyMap[getKeyCode(jsonStringValue(json, "right"))] = Input::RIGHT;
     keyMap[getKeyCode(jsonStringValue(json, "shoot"))] = Input::SHOOT;
+
+    srand(static_cast<unsigned int>(std::time(0)));
 }
 
 void Game::update(Input input) {
@@ -72,14 +75,16 @@ GameState Game::getGameState() {
         }
     }
     if(aliens.size() == 0) {
-        loadAliens();
+        return GameState::NEXT_LEVEL;
     }
     return GameState::PLAYING;
 }
 
 void Game::loadAliens() {
+    level++;
     string json = getJSON(originalIdentifier, "games");
     vector<string> alienRows = jsonStringArrayValue(json, "aliens");
+    aliens = {};
     for(int i = 0; i < alienRows.size(); i++) {
         Alien alien = Alien(alienRows[i]);
         alien.position = Point(i * (alien.getBounds().size.x + 4), 5);
@@ -99,7 +104,7 @@ void Game::spawnPlayerShoot() {
     // Check if the delay between bursts has passed and if all bursts have been fired
     if (getTime() - player.lastShotTime < player.bullet.delay) {
         if (player.burstsFired >= player.bursts) {
-            return; // If we already fired all bursts, return
+            //return; // If we already fired all bursts, return
         }
     } else {
         // If the full delay has passed, reset for a new burst sequence
@@ -109,7 +114,7 @@ void Game::spawnPlayerShoot() {
 
     // Check if we are within the time to fire the next bullet in the burst
     if (getTime() - player.lastShotTime < player.bullet.delay / 5) {
-        return; // Not yet time to fire the next bullet in the burst
+        //return; // Not yet time to fire the next bullet in the burst
     }
     player.lastShotTime = getTime();
     
@@ -123,10 +128,21 @@ void Game::spawnPlayerShoot() {
 }
 
 void Game::spawnPowerup(int alienIndex) {
-    Powerup p = Powerup("healthBoost");
-    p.position = aliens[alienIndex].position;
-    p.movingDirection = Point(1, 1);
-    powerups.push_back(p);
+    vector<double> probabilities;
+    for(Powerup p : aliens[alienIndex].powerups) {
+        probabilities.push_back(p.probability);
+    }
+
+    int powerupIndex = getRandomIndex(probabilities);
+    cout << probabilities.size() << " ";
+
+    if(powerupIndex != -1) {
+        Powerup p = aliens[alienIndex].powerups[powerupIndex];
+        p.position = aliens[alienIndex].position;
+        p.movingDirection = Point(1, 1);
+        powerups.push_back(p);
+    }
+
     aliens.erase(aliens.begin() + alienIndex);
     player.aliensKilled++;
 }
