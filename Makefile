@@ -1,4 +1,4 @@
-CXX	:= g++20
+CXX	:= c++
 CXXFLAGS := -Wall -std=c++20
 
 # Contain path for any includes (headers)
