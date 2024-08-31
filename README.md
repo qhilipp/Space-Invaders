@@ -7,7 +7,7 @@ This is an implementation of the classic "Space Invaders" 80's game with great c
 The **c++ compiler** and **nurses** library are mandatory. The **boost** library is optional for testing.
 
 ## Installation
-Clone this repository and execute `make` and then `make run` to build and run the game.
+Clone this repository cd into the repo and execute `make` and then `make run` to build and run the game.
 
 ## Testing
 To build the tests execute `make tests` and to run the tests execute `make run_tests`. The test execution might produce some error looking output. E.g. that some key in a json object cannot be found, but that is actually expected behavior, since we also test error cases.

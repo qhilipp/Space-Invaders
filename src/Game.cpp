@@ -58,7 +58,6 @@ void Game::updateBounds(Bounds bounds) {
 void Game::update(Input input) {
     if(input == Input::FREEZE) frozen = !frozen;
     if(input == Input::QUIT) {
-        endwin();
         exit(0);
     }
     if(input == Input::AUTOPILOT) autoPilot = !autoPilot;
